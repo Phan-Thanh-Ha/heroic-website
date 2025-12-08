@@ -9,12 +9,18 @@ import {
   DownOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { getProvinces } from '@/api/province.api'
 
 const { Header: AntHeader } = Layout
 const { Search } = Input
 
 const Header: React.FC = () => {
   const [drawerVisible, setDrawerVisible] = useState(false)
+
+  const handleGetProvinces = async () => {
+    const response = await getProvinces()
+    console.log(response)
+  }
 
   // Search suggestions
   const searchSuggestions = [
@@ -96,13 +102,13 @@ const Header: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 text-xs md:text-sm">
             <span>HIỆU SUPPLEMENTS UY TÍN TỪ 2011</span>
-            <Divider type="vertical" className="bg-white/30 h-4" />
+            <Divider orientation="vertical" className="bg-white/30 h-4" />
             <span>CAM KẾT CHUẨN 100% CHÍNH HÃNG</span>
-            <Divider type="vertical" className="bg-white/30 h-4 hidden md:block" />
+            <Divider orientation="vertical" className="bg-white/30 h-4 hidden md:block" />
             <span className="hidden md:inline">
               GIAO HÀNG NỘI THÀNH SIÊU TỐC 1 - 4H
             </span>
-            <Divider type="vertical" className="bg-white/30 h-4 hidden lg:block" />
+            <Divider orientation="vertical" className="bg-white/30 h-4 hidden lg:block" />
             <span className="hidden lg:inline">
               FREESHIP TOÀN QUỐC CHO ĐƠN HÀNG TỪ 1
             </span>
@@ -172,6 +178,7 @@ const Header: React.FC = () => {
                   icon={<ShoppingCartOutlined />}
                   className="flex items-center gap-2 border-yellow-400 border-2"
                   style={{ backgroundColor: '#dc2626' }}
+                  onClick={handleGetProvinces}
                 >
                   <span className="hidden md:inline">Giỏ hàng</span>
                 </Button>
@@ -227,7 +234,7 @@ const Header: React.FC = () => {
         placement="left"
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
-        width={280}
+        size={280}
       >
         <Menu
           mode="vertical"

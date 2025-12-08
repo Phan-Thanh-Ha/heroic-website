@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
             <Title level={5} className="text-white mb-4">
               Liên kết nhanh
             </Title>
-            <Space direction="vertical" size="small" className="w-full">
+            <Space orientation="vertical" size="small" className="w-full">
               <Link to="/" className="text-gray-400 hover:text-white block">
                 Trang chủ
               </Link>
@@ -87,7 +87,7 @@ const Footer: React.FC = () => {
             <Title level={5} className="text-white mb-4">
               Hỗ trợ khách hàng
             </Title>
-            <Space direction="vertical" size="small" className="w-full">
+            <Space orientation="vertical" size="small" className="w-full">
               <Link
                 to="/shipping"
                 className="text-gray-400 hover:text-white block"
@@ -120,7 +120,7 @@ const Footer: React.FC = () => {
             <Title level={5} className="text-white mb-4">
               Thông tin liên hệ
             </Title>
-            <Space direction="vertical" size="middle" className="w-full">
+            <Space orientation="vertical" size="middle" className="w-full">
               <div className="flex items-start gap-2">
                 <PhoneOutlined className="text-gray-400 mt-1" />
                 <div>
