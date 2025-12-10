@@ -7,6 +7,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true,
+    host: true, // Cho phép truy cập từ bên ngoài
+    allowedHosts: true, // Cho phép tất cả hosts (chỉ dùng cho dev)
   },
   resolve: {
     alias: {

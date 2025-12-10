@@ -22,16 +22,6 @@ const Header: React.FC = () => {
     console.log(response)
   }
 
-  // Search suggestions
-  const searchSuggestions = [
-    'Whey Protein',
-    'Sữa Tăng Cân',
-    'BCAA',
-    'EAA',
-    'Creatine',
-    'Vitamin D3 K2',
-    'Dầu cá Omega 3',
-  ]
 
   // Navigation menu items
   const navMenuItems: MenuProps['items'] = [
@@ -146,17 +136,7 @@ const Header: React.FC = () => {
                 size="large"
                 className="w-full"
               />
-              {/* Search Suggestions */}
-              <div className="flex flex-wrap gap-2 mt-2 text-xs text-white/80">
-                {searchSuggestions.map((suggestion, index) => (
-                  <span
-                    key={index}
-                    className="cursor-pointer hover:text-white transition"
-                  >
-                    {suggestion}
-                  </span>
-                ))}
-              </div>
+             
             </div>
 
             {/* Right Actions */}
