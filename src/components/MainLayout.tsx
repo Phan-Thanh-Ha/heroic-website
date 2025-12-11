@@ -8,9 +8,9 @@ const { Content } = Layout;
 
 const MainLayout: React.FC = () => {
     return (
-        <Layout className="min-h-screen flex flex-col">
+        <Layout className="min-h-screen ">
             <Header />
-            <Content className="flex-1 bg-white p-4 pt-10">
+            <Content className="flex-1 bg-white p-4 pt-10 min-h-[800px]">
                 <div className="min-h-[800px]">
                     <Outlet />
                 </div>

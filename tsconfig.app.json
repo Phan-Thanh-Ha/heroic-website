@@ -20,11 +20,16 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/routes/*": ["./src/routes/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/views/*": ["./src/views/*"],
       "@/api/*": ["./src/api/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/views/*": ["./src/views/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/provider/*": ["./src/provider/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/router/*": ["./src/router/*"],
+      "@/layouts/*": ["./src/layouts/*"],
     },
 
     /* Linting */

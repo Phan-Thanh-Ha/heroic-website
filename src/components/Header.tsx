@@ -1,230 +1,96 @@
-import React, { useState } from 'react'
-import { Layout, Input, Button, Badge, Menu, Drawer, Divider } from 'antd'
-import type { MenuProps } from 'antd'
-import {
-  ShoppingCartOutlined,
-  SearchOutlined,
-  MenuOutlined,
-  PhoneOutlined,
-  DownOutlined,
-} from '@ant-design/icons'
-import { Link } from 'react-router-dom'
-import { getProvinces } from '@/api/province.api'
+import { colors } from '@/config';
+import { Layout, Image, Input, Button, Menu } from 'antd';
+import banner from '@/assets/banner.jpg.webp';
+import logo from '@/assets/icon-512.svg';
+import { HeartOutlined, SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import Title from 'antd/es/typography/Title';
 
 const { Header: AntHeader } = Layout
-const { Search } = Input
 
-const Header: React.FC = () => {
-  const [drawerVisible, setDrawerVisible] = useState(false)
-
-  const handleGetProvinces = async () => {
-    const response = await getProvinces()
-    console.log(response)
-  }
-
-
-  // Navigation menu items
-  const navMenuItems: MenuProps['items'] = [
+const Header = () => {
+  const items = [
     {
-      key: 'supplements',
-      label: (
-        <span>
-          Thực Phẩm Bổ Sung <DownOutlined className="text-xs ml-1" />
-        </span>
-      ),
-      children: [
-        { key: 'whey', label: 'Whey Protein' },
-        { key: 'mass', label: 'Mass Gainer' },
-        { key: 'bcaa', label: 'BCAA' },
-        { key: 'creatine', label: 'Creatine' },
-      ],
+      label: 'Trang chủ',
+      key: 'home',
     },
     {
-      key: 'goals',
-      label: (
-        <span>
-          Mục Tiêu & Nhu Cầu <DownOutlined className="text-xs ml-1" />
-        </span>
-      ),
+      label: 'Sản phẩm',
+      key: 'products',
     },
     {
-      key: 'promotions',
-      label: (
-        <span>
-          Khuyến Mãi <DownOutlined className="text-xs ml-1" />
-        </span>
-      ),
+      label: 'Liên hệ',
+      key: 'contact',
     },
-    {
-      key: 'brands',
-      label: <Link to="/brands">Thương Hiệu</Link>,
-    },
-    {
-      key: 'knowledge',
-      label: (
-        <span>
-          Kiến Thức <DownOutlined className="text-xs ml-1" />
-        </span>
-      ),
-    },
-    {
-      key: 'tools',
-      label: (
-        <span>
-          Công Cụ <DownOutlined className="text-xs ml-1" />
-        </span>
-      ),
-    },
-    {
-      key: 'stores',
-      label: <Link to="/stores">Hệ Thống Cửa Hàng</Link>,
-    },
-    {
-      key: 'login',
-      label: <Link to="/login">Đăng Nhập</Link>,
-    },
-  ]
-
+  ];
   return (
-    <>
-      {/* Top Bar - Red Background with Commitments */}
-      <div className="bg-red-600 text-white py-2">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 text-xs md:text-sm">
-            <span>HIỆU SUPPLEMENTS UY TÍN TỪ 2011</span>
-            <Divider orientation="vertical" className="bg-white/30 h-4" />
-            <span>CAM KẾT CHUẨN 100% CHÍNH HÃNG</span>
-            <Divider orientation="vertical" className="bg-white/30 h-4 hidden md:block" />
-            <span className="hidden md:inline">
-              GIAO HÀNG NỘI THÀNH SIÊU TỐC 1 - 4H
-            </span>
-            <Divider orientation="vertical" className="bg-white/30 h-4 hidden lg:block" />
-            <span className="hidden lg:inline">
-              FREESHIP TOÀN QUỐC CHO ĐƠN HÀNG TỪ 1
-            </span>
-          </div>
-        </div>
+    <div>
+      <div className="w-full">
+        <Image
+          alt="Heroic banner"
+          src={banner}
+          preview={false}
+          style={{ width: '100%', height: 80, objectFit: 'contain' }}
+        />
       </div>
 
-      {/* Main Header - Dark Red Background */}
-      <AntHeader className=" from-red-800 to-red-900 text-white sticky top-0 z-50 px-4 py-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-start gap-6">
-            {/* Logo Section */}
-            <Link to="/" className="shrink-0">
-              <div className="text-3xl font-bold text-white">HEROIC</div>
-              <div className="text-xs text-white/80 mt-1">
-                Gym Equipment & Supplements
-              </div>
-            </Link>
-
-            {/* Search Bar Section - Center */}
-            <div className="flex-1 max-w-2xl">
-              <Search
-                placeholder="Tìm kiếm..."
-                allowClear
-                enterButton={
-                  <Button
-                    type="primary"
-                    danger
-                    icon={<SearchOutlined />}
-                    className="h-full"
-                  >
-                    Tìm kiếm
-                  </Button>
-                }
-                size="large"
-                className="w-full"
+      <AntHeader style={{ background: colors.brand.primary, padding: 0, textAlign: 'center', height: '100px' }}>
+        <div className="grid grid-cols-3 grid-rows-1 gap-5">
+          <div>
+            {/* Logo Heroic Gym Store */}
+            <div className="flex justify-center items-center">
+              <Image
+                alt="Heroic Gym Store"
+                src={logo}
+                preview={false}
+                style={{ width: 100, height: 100, objectFit: 'contain' }}
               />
-             
             </div>
-
-            {/* Right Actions */}
-            <div className="shrink-0 flex items-start gap-4">
-              {/* Hotline */}
-              <div className="hidden lg:flex flex-col items-start">
-                <div className="flex items-center gap-2 text-sm">
-                  <PhoneOutlined />
-                  <span>Gọi mua hàng</span>
-                </div>
-                <div className="text-lg font-bold mt-1">1900 1234</div>
-              </div>
-
-              {/* Cart */}
-              <Badge count={0} showZero={false} offset={[-5, 5]}>
-                <Button
-                  type="primary"
-                  danger
-                  icon={<ShoppingCartOutlined />}
-                  className="flex items-center gap-2 border-yellow-400 border-2"
-                  style={{ backgroundColor: '#dc2626' }}
-                  onClick={handleGetProvinces}
-                >
-                  <span className="hidden md:inline">Giỏ hàng</span>
-                </Button>
-              </Badge>
-
-              {/* Mobile Menu Button */}
-              <Button
-                type="text"
-                icon={<MenuOutlined />}
-                className="lg:hidden text-white hover:bg-white/10"
-                onClick={() => setDrawerVisible(true)}
-              />
+            <div className="flex justify-center items-center mt-5">
+              <Title level={2} className="text-white font-bold">Heroic Gym Store</Title>
             </div>
           </div>
+
+          <div>
+            <div className="">
+              {/* tìm kiếm sản phẩm */}
+              <Input
+                placeholder="Tìm kiếm sản phẩm"
+                prefix={<SearchOutlined />}
+                style={{ width: '100%', height: 50 }}
+              />
+            </div>
+            {/* menu */}
+           
+          </div>
+
+          <div className="mt-5">
+            {/*  yêu thích tài khoản giỏ hàng */}
+            <div className="flex gap-2 items-center justify-center">
+              <Button
+                type="default"
+                icon={<HeartOutlined />}
+              >
+                Yêu thích
+              </Button>
+              <Button
+                type="default"
+                icon={<ShoppingCartOutlined />}
+              >
+                Giỏ hàng
+              </Button>
+              <Button
+                type="default"
+                icon={<UserOutlined />}
+              >
+                Tài khoản
+              </Button>
+            </div>
+          </div>
+          
         </div>
       </AntHeader>
-
-      {/* Navigation Bar - White Background */}
-      <div className="bg-white border-b shadow-sm sticky top-[140px] z-40">
-        <div className="max-w-7xl mx-auto px-4">
-          <Menu
-            mode="horizontal"
-            items={navMenuItems}
-            className="border-none hidden lg:flex"
-            style={{ lineHeight: '48px' }}
-          />
-          {/* Mobile menu indicator */}
-          <div className="lg:hidden py-3 text-center text-sm text-gray-600">
-            <Button
-              type="text"
-              icon={<MenuOutlined />}
-              onClick={() => setDrawerVisible(true)}
-            >
-              Menu
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Search Bar */}
-      <div className="lg:hidden bg-white border-b px-4 py-3">
-        <Search
-          placeholder="Tìm kiếm sản phẩm..."
-          allowClear
-          enterButton={<SearchOutlined />}
-          size="large"
-        />
-      </div>
-
-      {/* Mobile Drawer */}
-      <Drawer
-        title="Menu"
-        placement="left"
-        onClose={() => setDrawerVisible(false)}
-        open={drawerVisible}
-        size={280}
-      >
-        <Menu
-          mode="vertical"
-          items={navMenuItems}
-          className="border-none"
-          onClick={() => setDrawerVisible(false)}
-        />
-      </Drawer>
-    </>
-  )
-}
+    </div>
+  );
+};
 
 export default Header
