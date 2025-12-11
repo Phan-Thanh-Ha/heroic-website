@@ -1,93 +1,57 @@
-import { colors } from '@/config';
-import { Layout, Image, Input, Button, Menu } from 'antd';
 import banner from '@/assets/banner.jpg.webp';
 import logo from '@/assets/icon-512.svg';
-import { HeartOutlined, SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import Title from 'antd/es/typography/Title';
+import { colors } from '@/config';
+import { SearchOutlined } from '@ant-design/icons';
+import { Image, Input, Layout } from 'antd';
 
 const { Header: AntHeader } = Layout
 
 const Header = () => {
-  const items = [
-    {
-      label: 'Trang chủ',
-      key: 'home',
-    },
-    {
-      label: 'Sản phẩm',
-      key: 'products',
-    },
-    {
-      label: 'Liên hệ',
-      key: 'contact',
-    },
-  ];
   return (
-    <div>
-      <div className="w-full">
+    <div className="w-full">
+      {/* bg xanh dương */}
+      <div className="w-full flex justify-center items-center bg-sky-400" >
         <Image
           alt="Heroic banner"
           src={banner}
           preview={false}
-          style={{ width: '100%', height: 80, objectFit: 'contain' }}
         />
       </div>
 
-      <AntHeader style={{ background: colors.brand.primary, padding: 0, textAlign: 'center', height: '100px' }}>
-        <div className="grid grid-cols-3 grid-rows-1 gap-5">
-          <div>
-            {/* Logo Heroic Gym Store */}
-            <div className="flex justify-center items-center">
-              <Image
-                alt="Heroic Gym Store"
-                src={logo}
-                preview={false}
-                style={{ width: 100, height: 100, objectFit: 'contain' }}
-              />
-            </div>
-            <div className="flex justify-center items-center mt-5">
-              <Title level={2} className="text-white font-bold">Heroic Gym Store</Title>
-            </div>
-          </div>
+      <AntHeader
+        style={{
+          background: colors.brand.primary,
+          padding: '0 16px',
+          textAlign: 'center',
+          height: '100px',
+          width: '100vw',
+          marginLeft: 'calc(50% - 50vw)',
+          maxWidth: '100vw',
+          margin: 0,
+        }}
+      >
 
+        <div className="grid grid-cols-3 grid-rows-1 gap-5" style={{ width: '100%', margin: '0 auto' }}>
           <div>
-            <div className="">
-              {/* tìm kiếm sản phẩm */}
-              <Input
-                placeholder="Tìm kiếm sản phẩm"
-                prefix={<SearchOutlined />}
-                style={{ width: '100%', height: 50 }}
-              />
-            </div>
-            {/* menu */}
-           
+            <Image
+              alt="Heroic Gym Store"
+              src={logo}
+              preview={false} 
+              style={{ width: 100, height: 80, objectFit: 'contain', marginTop: 10 }}
+            />
           </div>
-
-          <div className="mt-5">
-            {/*  yêu thích tài khoản giỏ hàng */}
-            <div className="flex gap-2 items-center justify-center">
-              <Button
-                type="default"
-                icon={<HeartOutlined />}
-              >
-                Yêu thích
-              </Button>
-              <Button
-                type="default"
-                icon={<ShoppingCartOutlined />}
-              >
-                Giỏ hàng
-              </Button>
-              <Button
-                type="default"
-                icon={<UserOutlined />}
-              >
-                Tài khoản
-              </Button>
-            </div>
+          <div className='grid grid-cols-1 grid-rows-1 justify-center items-center'>
+            {/* tìm kiếm */}
+            <Input
+              placeholder="Tìm kiếm sản phẩm"
+              prefix={<SearchOutlined />}
+              style={{ width: 300, height: 40, borderRadius: 10, marginTop: 10 }}
+              
+            />
           </div>
-          
+          <div>3</div>
         </div>
+
       </AntHeader>
     </div>
   );
