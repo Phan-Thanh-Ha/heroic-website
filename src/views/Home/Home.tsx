@@ -10,15 +10,15 @@ export const Home = ({ title = "" }) => {
 
     return (
         <>
-            <div className="grid grid-cols-3 grid-rows-3 gap-4">
-                <div className="col-span-2 row-span-3">
+            <div className="2xl:grid grid-cols-3 grid-rows-3 gap-4">
+                <div className="2xl:col-span-2 2xl:row-span-3">
                     <Banner height={300} />
                 </div>
 
-                <div className="col-span-1 row-span-1">
+                <div className="2xl:col-span-1 2xl:row-span-1">
                     <Image src={banner1} alt="banner" style={{ borderRadius: 8 }} />
                 </div>
-                <div className="col-span-1 row-span-2">
+                <div className="2xl:col-span-1 2xl:row-span-2">
                     <Image src={banner2} alt="banner" style={{ borderRadius: 8 }} />
                 </div>
             </div>
