@@ -1,6 +1,7 @@
 import banner from '@/assets/banner.jpg.webp';
 import logo from '@/assets/icon-512.svg';
-import { LoginPageModal, type LoginPageModalRef, } from '@/views/LoginPage/LoginPage';
+// import { LoginPageModal, type LoginPageModalRef, } from '@/views/LoginPage/LoginPage';
+import { RegisterPageModal, type RegisterPageModalRef } from '@/views/RegisterPage/RegisterPage';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Image, Input, Layout } from 'antd';
 import { useRef } from 'react';
@@ -8,12 +9,18 @@ import { useRef } from 'react';
 const { Header: AntHeader } = Layout
 const Header = () => {
   // 💡 SỬA: KHAI BÁO HOOKS VÀ HÀM SỬ DỤNG HOOKS Ở ĐÂY
-  const modalRef = useRef<LoginPageModalRef>(null);
+  // const modalRef = useRef<LoginPageModalRef>(null);
+  const registerModalRef = useRef<RegisterPageModalRef>(null);
 
-  // Hàm xử lý khi bấm nút (sử dụng modalRef)
-  const handleLoginClick = () => {
-      modalRef.current?.handleOpen();
+
+
+  const handleRegisterClick = () => {
+    registerModalRef.current?.handleOpen();
   }
+  // Hàm xử lý khi bấm nút (sử dụng modalRef)
+  // const handleLoginClick = () => {
+  //     modalRef.current?.handleOpen();
+  // }
   return (
     <div className="w-full">
       <div className="w-full flex justify-center items-center bg-sky-400" >
@@ -52,14 +59,19 @@ const Header = () => {
             />
           </div>
           <div className='flex  items-center gap-2 justify-center mt-4'>
-              <Button type="dashed" icon={<UserOutlined />} onClick={handleLoginClick}>
+              <Button type="dashed" icon={<UserOutlined />} onClick={handleRegisterClick}>
                 Đăng nhập / Đăng ký
               </Button>
           </div> 
         </div>
       </AntHeader>
-      <LoginPageModal
+      {/* <LoginPageModal
                 ref={modalRef} 
+                onClose={() => console.log("Close modal")}
+                onSubmitOk={() => console.log("Submit OK")}
+            /> */}
+            <RegisterPageModal 
+                ref={registerModalRef} 
                 onClose={() => console.log("Close modal")}
                 onSubmitOk={() => console.log("Submit OK")}
             />

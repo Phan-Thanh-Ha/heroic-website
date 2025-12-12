@@ -89,11 +89,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
                                 onSuccess={handleSuccessFacebook}
                                 onFail={(error) => console.error('Facebook login failed', error)}
                                 onProfileSuccess={(response) => console.log('profile', response)}
-                            />
+                                className="w-full h-10 rounded border border-gray-300 flex items-center justify-center text-gray-700 font-medium hover:bg-gray-100 transition-colors"
+                            >
+                                Facebook
+                            </FacebookLogin>
 
                         </div>
                         <div className='w-1/2 ml-2' style={{ display: 'flex', justifyContent: 'center' }}>
-                            <div style={{ width: '100%' }}>
+                            <div>
                                 <GoogleLogin
                                     onSuccess={(credentialResponse) => {
                                         handleSuccessGoogle(credentialResponse);
@@ -106,6 +109,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
                                     theme="outline"
                                     size="large"
                                     text="signin_with"
+                                    containerProps={{ className: 'w-full h-10 rounded border border-gray-300 flex items-center justify-center text-gray-700 font-medium hover:bg-gray-100 transition-colors' }}
                                 />
                             </div>
                         </div>
