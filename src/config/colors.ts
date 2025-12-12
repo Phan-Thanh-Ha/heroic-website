@@ -23,18 +23,21 @@ import {
 export const colors = {
     brand: {
         primary: red.primary,
-        primaryHover: red[3],
-        primaryActive: red[6],
+        primaryHover: red[3],//#ffa39e
+        primaryActive: red[6],//#f5222d
     },
     neutral: {
-        text: grey[9],
-        border: grey[3],
-        background: grey[0],
+        text: grey[9],//#434343
+        border: grey[3],//#f5f5f5
+        background: grey[0],//#f5f5f5
     },
     polarGreen: {
-        green0: green[0],
+        green0: green[0],//#f5f5f5
         primary: green.primary,
-        dark: green[7],
+        dark: green[7],//#389e0d
+    },
+    Blue: {
+        blue3: blue[3], //'#91caff
     },
 };
 

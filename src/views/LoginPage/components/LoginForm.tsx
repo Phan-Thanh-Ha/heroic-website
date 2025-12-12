@@ -1,11 +1,21 @@
 import {
     EyeInvisibleOutlined,
-    EyeTwoTone,
-    FacebookOutlined,
-    GoogleOutlined
+    EyeTwoTone
 } from '@ant-design/icons';
+import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { Button, Divider, Form, Input } from 'antd';
+import { jwtDecode } from 'jwt-decode';
 import React from 'react';
+import FacebookLogin from '@greatsumini/react-facebook-login';
+// Hàm xử lý khi đăng nhập thành công với Google
+const handleSuccessGoogle = (credentialResponse: CredentialResponse) => {
+    const decoded = jwtDecode(credentialResponse.credential || 'null');
+    console.log('decoded', decoded);
+}
+
+const handleErrorGoogle = () => {
+    console.log('errorGoogle');
+}
 
 interface LoginFormProps {
     onClose: () => void;
@@ -18,6 +28,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
         console.log('Thông tin đăng nhập:', values);
         // Thêm logic API login ở đây
     };
+
+    const handleSuccessFacebook = (response: any) => {
+        // Includes accessToken for follow-up Graph calls
+        console.log('facebook auth', response);
+    }
 
     return (
         <div className="rounded-lg overflow-hidden shadow-lg mt-20">
@@ -45,36 +60,55 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
                         />
                     </Form.Item>
 
-
-
                     <Form.Item>
                         <Button
                             type="primary"
                             htmlType="submit"
                             block
                             className="h-12 text-lg font-bold bg-red-600 hover:bg-red-700 border-none"
+                            size="large"
                         >
                             Đăng Nhập Ngay
                         </Button>
                     </Form.Item>
 
+                    <div className='flex justify-self-end'>
+                        <span className="text-sm text-red-400 jus">Quên mật khẩu?</span>
+                    </div>
+
                     <Divider>
                         <span className="text-gray-500 text-sm">Hoặc tiếp tục với</span>
                     </Divider>
 
-                    <div className="flex justify-between gap-3">
-                        <Button
-                            icon={<FacebookOutlined />}
-                        >
-                            Đăng nhập với Facebook
-                        </Button>
+                    <div className="flex flex-1 justify-between">
+                        <div className='w-1/2 mr-2'>
+                            <FacebookLogin
+                                appId={import.meta.env.VITE_FB_APP_ID || ''}
+                                scope="public_profile"
+                                fields="name,picture"
+                                onSuccess={handleSuccessFacebook}
+                                onFail={(error) => console.error('Facebook login failed', error)}
+                                onProfileSuccess={(response) => console.log('profile', response)}
+                            />
 
-                        <Button
-                            block
-                            icon={<GoogleOutlined />}
-                        >
-                            Đăng nhập với Google
-                        </Button>
+                        </div>
+                        <div className='w-1/2 ml-2' style={{ display: 'flex', justifyContent: 'center' }}>
+                            <div style={{ width: '100%' }}>
+                                <GoogleLogin
+                                    onSuccess={(credentialResponse) => {
+                                        handleSuccessGoogle(credentialResponse);
+                                    }}
+                                    onError={() => {
+                                        handleErrorGoogle();
+                                    }}
+                                    useOneTap={false}
+                                    shape="rectangular"
+                                    theme="outline"
+                                    size="large"
+                                    text="signin_with"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <div className="text-center mt-6 text-sm">

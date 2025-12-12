@@ -9,6 +9,10 @@ export default defineConfig({
     open: true,
     host: true, // Cho phép truy cập từ bên ngoài
     allowedHosts: true, // Cho phép tất cả hosts (chỉ dùng cho dev)
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+      'Cross-Origin-Embedder-Policy': 'unsafe-none',
+    },
   },
   resolve: {
     alias: {
