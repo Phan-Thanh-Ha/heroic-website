@@ -1,7 +1,6 @@
 import banner from '@/assets/banner.jpg.webp';
 import logo from '@/assets/icon-512.svg';
-// import { LoginPageModal, type LoginPageModalRef, } from '@/views/LoginPage/LoginPage';
-import { RegisterPageModal, type RegisterPageModalRef } from '@/views/RegisterPage/RegisterPage';
+import { LoginPageModal, type LoginPageModalRef, } from '@/views/LoginPage/LoginPage';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Image, Input, Layout } from 'antd';
 import { useRef } from 'react';
@@ -9,18 +8,12 @@ import { useRef } from 'react';
 const { Header: AntHeader } = Layout
 const Header = () => {
   // 💡 SỬA: KHAI BÁO HOOKS VÀ HÀM SỬ DỤNG HOOKS Ở ĐÂY
-  // const modalRef = useRef<LoginPageModalRef>(null);
-  const registerModalRef = useRef<RegisterPageModalRef>(null);
+  const modalRef = useRef<LoginPageModalRef>(null);
 
-
-
-  const handleRegisterClick = () => {
-    registerModalRef.current?.handleOpen();
-  }
   // Hàm xử lý khi bấm nút (sử dụng modalRef)
-  // const handleLoginClick = () => {
-  //     modalRef.current?.handleOpen();
-  // }
+  const handleLoginClick = () => {
+      modalRef.current?.handleOpen();
+  }
   return (
     <div className="w-full">
       <div className="w-full flex justify-center items-center bg-sky-400" >
@@ -43,38 +36,34 @@ const Header = () => {
             <Image
               alt="Heroic Gym Store"
               src={logo}
-              preview={false} 
+              preview={false}
               style={{ width: 100, height: 80, objectFit: 'contain', marginTop: 10 }}
             />
             <span className='text-white text-2xl font-bold align-middle'>HEROIC GYM STORE</span>
           </div>
-          
+
           <div className='grid grid-cols-1 grid-rows-1 justify-center items-center mt-4'>
             {/* tìm kiếm */}
             <Input
               placeholder="Tìm kiếm sản phẩm"
               prefix={<SearchOutlined />}
               className='w-full'
-              style={{  height: 40, borderRadius: 10 }}
+              style={{ height: 40, borderRadius: 10 }}
             />
           </div>
           <div className='flex  items-center gap-2 justify-center mt-4'>
-              <Button type="dashed" icon={<UserOutlined />} onClick={handleRegisterClick}>
-                Đăng nhập / Đăng ký
-              </Button>
-          </div> 
+            <Button type="dashed" icon={<UserOutlined />} onClick={handleLoginClick}>
+              Đăng nhập / Đăng ký
+            </Button>
+          </div>
         </div>
       </AntHeader>
-      {/* <LoginPageModal
-                ref={modalRef} 
-                onClose={() => console.log("Close modal")}
-                onSubmitOk={() => console.log("Submit OK")}
-            /> */}
-            <RegisterPageModal 
-                ref={registerModalRef} 
-                onClose={() => console.log("Close modal")}
-                onSubmitOk={() => console.log("Submit OK")}
-            />
+      <LoginPageModal
+        ref={modalRef}
+        onClose={() => console.log("Close modal")}
+        onSubmitOk={() => console.log("Submit OK")}
+      />
+
     </div>
   );
 };

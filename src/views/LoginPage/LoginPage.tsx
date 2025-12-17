@@ -1,4 +1,4 @@
-import { Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import React, { useState, useImperativeHandle } from 'react'
 import LoginForm from './components/LoginForm'; // 👈 Cập nhật đường dẫn thực tế của bạn
 import { CloseOutlined } from '@ant-design/icons';
@@ -9,7 +9,7 @@ interface LoginPageProps {
     onSubmitOk?: () => void;
 }
 
-interface LoginPageModalRef {
+export interface LoginPageModalRef {
     handleOpen: () => void;
 }
 // -----------------------
@@ -55,6 +55,7 @@ export const LoginPageModal = React.forwardRef<LoginPageModalRef, LoginPageProps
                     <LoginForm onClose={handleClose} />
                 </div>
             </Modal>
+
         </div>
     )
 })
