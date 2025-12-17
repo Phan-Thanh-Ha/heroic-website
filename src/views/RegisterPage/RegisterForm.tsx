@@ -174,19 +174,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                     rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('Vui lòng đồng ý với Điều khoản!')) }]}
                 >
                     <Checkbox>
-                        Tôi đã đồng ý với các
-                        <a href="#" className="text-red-600 font-semibold mx-1">Điều khoản</a> và
-                        <a href="#" className="text-red-600 font-semibold ml-1">Chính sách của Thực phẩm Chức năng & Bổ sung</a>
-                    </Checkbox>
-                </Form.Item>
-
-                {/* CHECKBOX */}
-                <Form.Item
-                    name="agreement"
-                    valuePropName="checked"
-                    rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('Vui lòng đồng ý với Điều khoản!')) }]}
-                >
-                    <Checkbox>
                         Tôi đã đồng ý với <a href="#" className="text-red-600 font-semibold">Điều khoản</a> và <a href="#" className="text-red-600 font-semibold">Chính sách</a>
                     </Checkbox>
                 </Form.Item>

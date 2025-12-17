@@ -1,7 +1,8 @@
-import { Button, Modal } from 'antd'
-import React, { useState, useImperativeHandle } from 'react'
-import LoginForm from './components/LoginForm'; // 👈 Cập nhật đường dẫn thực tế của bạn
+import { Modal } from 'antd'
+import React, { useState, useImperativeHandle, useRef } from 'react'
+import LoginForm from './components/LoginForm';
 import { CloseOutlined } from '@ant-design/icons';
+import { RegisterPageModal, type RegisterPageModalRef } from '../RegisterPage/RegisterPage';
 
 // --- Khai báo Types ---
 interface LoginPageProps {
@@ -14,18 +15,20 @@ export interface LoginPageModalRef {
 }
 // -----------------------
 
-export const LoginPageModal = React.forwardRef<LoginPageModalRef, LoginPageProps>(({ onClose, onSubmitOk }, ref) => {
+export const LoginPageModal = React.forwardRef<LoginPageModalRef, LoginPageProps>(({ onClose }, ref) => {
     const [visible, setVisible] = useState(false);
+    const registerModalRef = useRef<RegisterPageModalRef | null>(null);
 
     // Hàm để MỞ Modal
     const handleOpen = () => {
+        // Nếu là đăng ký ngay thì đóng modal login và mở modal register
+        if (onClose) onClose();
         setVisible(true);
     }
 
     // Hàm để ĐÓNG Modal
     const handleClose = () => {
         setVisible(false);
-        if (onClose) onClose();
     }
 
     // Sử dụng useImperativeHandle để expose handleOpen cho component cha
@@ -52,9 +55,24 @@ export const LoginPageModal = React.forwardRef<LoginPageModalRef, LoginPageProps
                     </div>
                 </div>
                 <div>
-                    <LoginForm onClose={handleClose} />
+                    <LoginForm
+                        onRegisterClick={() => {
+                            handleClose();
+                            registerModalRef.current?.handleOpen();
+                        }}
+                    />
                 </div>
             </Modal>
+
+            <RegisterPageModal
+                ref={registerModalRef}
+                onClose={() => console.log("Close modal")}
+                onSubmitOk={() => console.log("Submit OK")}
+                onLoginClick={() => {
+                    // Khi từ modal đăng ký bấm "Đăng nhập ngay" thì mở lại modal đăng nhập
+                    setVisible(true);
+                }}
+            />
 
         </div>
     )
