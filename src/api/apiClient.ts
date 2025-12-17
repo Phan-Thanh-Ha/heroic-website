@@ -7,7 +7,7 @@ import type {
 } from "axios";
 import { getMessageInstance } from "../util/messageService";
 
-const BASE_URL = "http://localhost:3102";
+const BASE_URL = "http://192.168.2.3:3102";
 const NAMESPACE = "heroic-shop";
 
 // 1. Đổi tên thành apiClient

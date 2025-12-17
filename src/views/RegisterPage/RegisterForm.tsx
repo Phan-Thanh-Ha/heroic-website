@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Button, Divider, Select, DatePicker, Checkbox } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { SelectProvinces } from '@/components';
 
 interface RegisterFormProps {
     onLoginClick?: () => void;
@@ -15,6 +16,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
         console.log('Register values:', values);
         if (onFinish) onFinish(values);
     };
+
+    const handleGetProvinces = () => {
+         console.log('Register values:',)
+    }
+
+    useEffect(() => {
+        handleGetProvinces()
+    },[])
 
     return (
         // Container nền trắng, đổ bóng, đẩy xuống dưới để đè lên header màu đỏ của Modal
@@ -118,10 +127,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                 <Form.Item label={<span className="font-semibold">Tỉnh / Thành phố</span>} 
                 name="province" 
                 rules={[{ required: true, message: 'Vui lòng chọn!' }]}>
-
-                    <Select placeholder="Chọn tỉnh / thành phố" className="h-11">
-                    <Select.Option value="hcm">TP. Hồ Chí Minh</Select.Option>
-                    </Select>
+                    <SelectProvinces
+                    onChange={(value) => {
+                        console.log('day la bo',value)
+                    }}
+                    />
+                    
+                  
                 </Form.Item>
 
 
@@ -197,6 +209,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                         htmlType="submit"
                         block
                         className="h-12 text-lg font-bold bg-red-600 hover:bg-red-700 border-none"
+                        onClick={handleGetProvinces}
                     >
                         ĐĂNG KÝ NGAY
                     </Button>
