@@ -18,10 +18,10 @@ const handleErrorGoogle = () => {
 }
 
 interface LoginFormProps {
-    onClose: () => void;
+    onRegisterClick?: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
 
     // Hàm xử lý khi form gửi thành công
     const onFinish = (values: any) => {
@@ -32,6 +32,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
     const handleSuccessFacebook = (response: any) => {
         // Includes accessToken for follow-up Graph calls
         console.log('facebook auth', response);
+    }
+
+    const handleRegisterClick = () => {
+        if (onRegisterClick) {
+            onRegisterClick();
+        }
     }
 
     return (
@@ -117,7 +123,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onClose }) => {
 
                     <div className="text-center mt-6 text-sm">
                         Bạn chưa có tài khoản?
-                        <a href="#" className="text-red-600 hover:text-red-700 font-semibold ml-1">Đăng ký ngay</a>
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleRegisterClick();
+                            }}
+                            className="text-red-600 hover:text-red-700 font-semibold ml-1"
+                        >
+                            Đăng ký ngay
+                        </a>
                     </div>
                 </Form>
             </div>

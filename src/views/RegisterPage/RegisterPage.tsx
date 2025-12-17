@@ -44,7 +44,6 @@ export const RegisterPageModal = React.forwardRef<RegisterPageModalRef, Register
                 width={600}
                 open={visible}
                 onCancel={handleClose}
-                bodyStyle={{ padding: 0 }} // Reset padding body để background đỏ tràn viền
             >
                 {/* Background Header Màu Đỏ */}
                 <div className="absolute top-0 left-0 w-full h-40 bg-red-600 rounded-t-lg">
