@@ -2,37 +2,32 @@ import { getProvinces } from '@/api/province.api'
 import React, { useEffect, useState } from 'react'
 import { Select } from 'antd'
 
-interface ProvinceOption {
-  id: number;
-  label: string;
-  value: string | number;
-}
+
 
 interface ProvinceProp {
-  onChange: (id: number,
-  label: string,
-  value: string | number
+  onChange: ( ProvinceOption : any
 ) => void;
 }
 
 export const SelectProvinces: React.FC<ProvinceProp> = ({ onChange }) => {
-  const [provincesList, setProvincesList] = useState<ProvinceOption[]>([])
+  const [provincesList, setProvincesList] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    handleGetProvinces(valueProvince)
-  }, [valueProvince])
+    handleGetProvinces()
+  }, [])
 
-  const handleGetProvinces = async (valueProvince) => {
+  const handleGetProvinces = async () => {
     setLoading(true)
     try {
-      const response = await getProvinces(valueProvince)
+      const response = await getProvinces()
       
-      if (response && response.data) {
-        const newResponse = response.data.map((item: any) => ({
+      if (response && response.data.data) {
+        const newResponse = response.data.data.map((item: any) => ({
             id : item.id,
             label: item.name,
             value: item.code,
+            code: item.code,
         }))
         
         setProvincesList(newResponse)
@@ -44,15 +39,12 @@ export const SelectProvinces: React.FC<ProvinceProp> = ({ onChange }) => {
     }
   }
 
-  const handleSelectedProvinces = (label: string | number, option: any) => {
+  const handleSelectedProvinces = (label: string | number, option:any) => {
     // 'option' chính là object bạn đã map ở trên: { id, label, value }
     console.log("ID:", option);
     onChange(option)
     
-    // Gửi ID về component cha
-    // if (onChange && option) {
-    //     onChange({value:option.value,option.id})
-    // }
+    
   };
 
   return (

@@ -1,29 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Divider, Select, DatePicker, Checkbox } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { SelectProvinces } from '@/components';
+import { SelectDistricts, SelectProvinces } from '@/components';
 
 interface RegisterFormProps {
     onLoginClick?: () => void;
     onFinish?: (values: any) => void;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
     const [form] = Form.useForm();
 
-    const handleFinish = (values: any) => {
-        console.log('Register values:', values);
-        if (onFinish) onFinish(values);
-    };
+    const [provinces,setProvinces] = useState({})
 
-    const handleGetProvinces = () => {
-         console.log('Register values:',)
-    }
 
-    useEffect(() => {
-        handleGetProvinces()
-    },[])
 
     return (
         // Container nền trắng, đổ bóng, đẩy xuống dưới để đè lên header màu đỏ của Modal
@@ -31,7 +22,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
             <Form
                 form={form}
                 layout="vertical"
-                onFinish={handleFinish}
                 scrollToFirstError={true}
             >
                 {/* HỌ VÀ TÊN */}
@@ -128,8 +118,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                 name="province" 
                 rules={[{ required: true, message: 'Vui lòng chọn!' }]}>
                     <SelectProvinces
-                    onChange={(value) => {
-                        console.log('day la bo',value)
+
+                    onChange={(item) => {     
+                        console.log('đây là cha',item)
+                        setProvinces(item)               
                     }}
                     />
                     
@@ -143,10 +135,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                     name="district"
                     rules={[{ required: true, message: 'Vui lòng chọn Quận/Huyện!' }]}
                 >
-                    <Select placeholder="Chọn quận / huyện" className="h-11">
-                        <Select.Option value="quan1">Quận 1</Select.Option>
-                        <Select.Option value="binhthanh">Bình Thạnh</Select.Option>
-                    </Select>
+                    <SelectDistricts
+                        pronvincesCode= {provinces}
+                        onChange={() => {     
+                        console.log('đây là cha')
+                                      
+                    }}
+                    />
+                        
+                    
                 </Form.Item>
 
                 {/* PHƯỜNG / XÃ */}
@@ -186,6 +183,19 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                     rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('Vui lòng đồng ý với Điều khoản!')) }]}
                 >
                     <Checkbox>
+                        Tôi đã đồng ý với các
+                        <a href="#" className="text-red-600 font-semibold mx-1">Điều khoản</a> và
+                        <a href="#" className="text-red-600 font-semibold ml-1">Chính sách của Thực phẩm Chức năng & Bổ sung</a>
+                    </Checkbox>
+                </Form.Item>
+
+                {/* CHECKBOX */}
+                <Form.Item
+                    name="agreement"
+                    valuePropName="checked"
+                    rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('Vui lòng đồng ý với Điều khoản!')) }]}
+                >
+                    <Checkbox>
                         Tôi đã đồng ý với <a href="#" className="text-red-600 font-semibold">Điều khoản</a> và <a href="#" className="text-red-600 font-semibold">Chính sách</a>
                     </Checkbox>
                 </Form.Item>
@@ -196,7 +206,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick, onFinish }) =
                         htmlType="submit"
                         block
                         className="h-12 text-lg font-bold bg-red-600 hover:bg-red-700 border-none"
-                        onClick={handleGetProvinces}
+                        
                     >
                         ĐĂNG KÝ NGAY
                     </Button>
