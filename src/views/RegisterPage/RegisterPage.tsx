@@ -26,7 +26,7 @@ export const RegisterPageModal = React.forwardRef<RegisterPageModalRef, Register
     // Hàm để ĐÓNG Modal
     const handleClose = () => {
         setVisible(false);
-        if (onClose) onClose();
+        onClose?.();
     }
 
     // Sử dụng useImperativeHandle để expose handleOpen cho component cha
@@ -70,11 +70,10 @@ export const RegisterPageModal = React.forwardRef<RegisterPageModalRef, Register
                     <RegisterForm 
                         onLoginClick={() => {
                             handleClose(); // Đóng form đăng ký
-                            if (onLoginClick) onLoginClick(); // Gọi hàm mở login từ cha
+                            onLoginClick?.(); // Gọi hàm mở login từ cha
                         }}
                         onFinish={(values) => {
                             console.log("Đăng ký thành công:", values);
-                            if (onSubmitOk) onSubmitOk();
                         }}
                     />
                 </div>
