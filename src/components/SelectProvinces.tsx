@@ -21,9 +21,8 @@ export const SelectProvinces: React.FC<ProvinceProp> = ({ onChange }) => {
     setLoading(true)
     try {
       const response = await getProvinces()
-      
-      if (response && response.data.data) {
-        const newResponse = response.data.data.map((item: any) => ({
+      if (response && response.result) {
+        const newResponse = response.result.map((item: any) => ({
             id : item.id,
             label: item.name,
             value: item.code,

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Divider, Select, DatePicker, Checkbox } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { SelectDistricts, SelectProvinces } from '@/components';
+import { SelectDistricts, SelectProvinces, SelectWards } from '@/components';
+import { authApi } from '@/api/auth.api';
 
 interface RegisterFormProps {
     onLoginClick?: () => void;
@@ -11,11 +12,41 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
     const [form] = Form.useForm();
-
+    const [lastName,setLastName] = useState('')
     const [provinces,setProvinces] = useState({})
+    const [district,setDistrict] = useState({})
+    const [ward,setWard] = useState({})
 
+    const hanndleRegister= async () =>{
+        try {
+            console.log('truyen')
+            const payload = {
+                email: 'thanh310@gmail.com',
+                firstName: 'luan',
+                lastName: lastName,
+                fullName: 'vo luan',
+                avatarUrl: 'abc',
+                address: 'abc',
+                phoneNumber:'12455' ,
+                birthday: '32-2-2024',
+                password: 'tyui',
+                facebookId: '',
+                googleId: '',
+                provinceId: provinces.id,
+                districtId: district.id,
+                wardId: ward.id,
+                fullAddress:'svsvdb' ,
+                typeRegister: 'rtyui'
+            }
 
-
+            //const response = await authApi.Register(payload)
+            console.log('data',payload)
+            
+        } catch (error) {
+            
+        }
+        
+    }
     return (
         // Container nền trắng, đổ bóng, đẩy xuống dưới để đè lên header màu đỏ của Modal
         <div className="relative bg-white p-8 rounded-lg shadow-lg mt-10 mx-4">
@@ -32,7 +63,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
                         rules={[{ required: true, message: 'Vui lòng nhập Họ!' }]}
                         className="flex-1"
                     >
-                        <Input placeholder="Nhập họ" className="h-11 border-gray-300" />
+                        <Input placeholder="Nhập họ" 
+                        className="h-11 border-gray-300"
+                        onChange={(e) => setLastName(e.target.value)} // Phải lấy e.target.value
+                        
+                        />
                     </Form.Item>
                     <Form.Item
                         label={<span className="font-semibold">Tên</span>}
@@ -136,10 +171,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
                     rules={[{ required: true, message: 'Vui lòng chọn Quận/Huyện!' }]}
                 >
                     <SelectDistricts
-                        pronvincesCode= {provinces}
-                        onChange={() => {     
-                        console.log('đây là cha')
-                                      
+                        pronvincesItem= {provinces}  
+                        onChange={(item) => {     
+                        
+                        setDistrict (item)              
                     }}
                     />
                         
@@ -152,9 +187,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
                     name="ward"
                     rules={[{ required: true, message: 'Vui lòng chọn Phường/Xã!' }]}
                 >
-                    <Select placeholder="Chọn phường / xã" className="h-11">
-                        <Select.Option value="phuong1">Phường 1</Select.Option>
-                    </Select>
+                    <SelectWards
+                        districsItem = {district}
+                        onChange={(item) => {     
+                        
+                        setWard (item)              
+                    }}
+                    />
                 </Form.Item>
 
                 {/* ĐỊA CHỈ */}
@@ -206,7 +245,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
                         htmlType="submit"
                         block
                         className="h-12 text-lg font-bold bg-red-600 hover:bg-red-700 border-none"
-                        
+                        onClick={hanndleRegister}
                     >
                         ĐĂNG KÝ NGAY
                     </Button>

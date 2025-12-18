@@ -7,21 +7,33 @@ import { Button, Divider, Form, Input } from 'antd';
 import { jwtDecode } from 'jwt-decode';
 import React from 'react';
 import FacebookLogin from '@greatsumini/react-facebook-login';
-// Hàm xử lý khi đăng nhập thành công với Google
+
+interface LoginFormProps {
+    onRegisterClick?: () => void;
+}
+const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
+    // Hàm xử lý khi đăng nhập thành công với Google
 const handleSuccessGoogle = (credentialResponse: CredentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential || 'null');
+    
     console.log('decoded', decoded);
+
+    // const payload = {
+    //     googleId: decoded.sub,
+    //     email: decoded.email,
+    //     name: decoded.name,
+    //     picture: decoded.picture,
+    //     accessToken: credentialResponse.credential
+    // }
+
+    // console.log('payload', payload);
 }
 
 const handleErrorGoogle = () => {
     console.log('errorGoogle');
 }
 
-interface LoginFormProps {
-    onRegisterClick?: () => void;
-}
 
-const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
 
     // Hàm xử lý khi form gửi thành công
     const onFinish = (values: any) => {
@@ -34,10 +46,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
         console.log('facebook auth', response);
     }
 
+    // Hàm xử lý khi bấm vào link đăng ký ngay
     const handleRegisterClick = () => {
-        if (onRegisterClick) {
-            onRegisterClick();
-        }
+        onRegisterClick?.();
     }
 
     return (
