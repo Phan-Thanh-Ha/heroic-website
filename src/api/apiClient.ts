@@ -7,13 +7,13 @@ import type {
 } from "axios";
 import { getMessageInstance } from "../util/messageService";
 
-// --- 1. ĐỊNH NGHĨA CẤU TRÚC PHẢN HỒI CHUẨN (NESTJS) ---
-// Giúp TypeScript hiểu được cấu trúc { status, code, message, data }
+
 export interface ApiResponse<T = any> {
-    status: "success" | "error";
-    code: number;
-    message: string;
-    data: T; // T là kiểu dữ liệu thực tế (ví dụ: { items: [], total: 63 })
+    status: string
+    code: number
+    success: boolean
+    message: string
+    data: T
 }
 
 const BASE_URL = "http://localhost:3102";
@@ -31,6 +31,13 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         config.headers.set("namespace", NAMESPACE);
+        // Truyền timeZone từ trình duyệt
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+        config.headers.set("x-timezone", timeZone);
+
+        // Truyền ngôn ngữ từ trình duyệt
+        const language = navigator.language || "vi-VN";
+        config.headers.set("x-language", language);
         
         // Lấy token thật từ localStorage
         const token = localStorage.getItem("accessToken");

@@ -1,18 +1,27 @@
-import request from "@/api/apiClient";
-import type { AxiosPromise } from "axios";
+import request, { type ApiResponse } from "@/api/apiClient";
 
 export const authApi = {
     // Đăng nhập
-    login: (data: any): AxiosPromise<any> => request({
-        url: "/v1/customers/auth/login",
-        data,
-        method: "post"
-    }),
+    login: (data: any): Promise<ApiResponse<any>> =>
+        request({
+            url: "/v1/customers/auth/login",
+            data,
+            method: "post",
+        }),
 
     //Login with Google
-    loginGoogle: (data: any): AxiosPromise<any> => request({
-        url: "/v1/customers/auth/login-with-google",
-        data,
-        method: "post"
-    }),
+    loginGoogle: (data: any): Promise<ApiResponse<any>> =>
+        request({
+            url: "/v1/customers/auth/login/google",
+            data,
+            method: "post",
+        }),
+
+    //Login with Facebook
+    loginFacebook: (data: any): Promise<ApiResponse<any>> =>
+        request({
+            url: "/v1/customers/auth/login/facebook",
+            data,
+            method: "post",
+        }),
 };
