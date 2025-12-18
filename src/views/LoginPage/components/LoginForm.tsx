@@ -7,49 +7,33 @@ import { Button, Divider, Form, Input } from 'antd';
 import { jwtDecode } from 'jwt-decode';
 import React from 'react';
 import FacebookLogin from '@greatsumini/react-facebook-login';
-import { authApi } from '@/api/auth.api';
-import { getMessageInstance } from '@/util/messageService';
-import icFacebook from '@/assets/icons/ic-facebook.svg';
-import { customerStore } from '@/store';
 
 interface LoginFormProps {
     onRegisterClick?: () => void;
-    onCloseModal?: () => void;
 }
-const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onCloseModal }) => {
-    const messageApi = getMessageInstance();
+const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
     // Hàm xử lý khi đăng nhập thành công với Google
-    const handleSuccessGoogle = async (credentialResponse: CredentialResponse) => {
-        try {
-            const decoded = jwtDecode(credentialResponse.credential || 'null');
-            if (decoded) {
-                // gọi API login
-                const payload = {
-                    googleId: decoded.sub,
-                    email: (decoded as any).email,
-                    firstName: (decoded as any).family_name,
-                    lastName: (decoded as any).given_name,
-                    fullName: (decoded as any).name || (decoded as any).given_name + ' ' + (decoded as any).family_name,
-                    avatarUrl: (decoded as any).picture,
-                }
-                const response = await authApi.loginGoogle(payload);
+const handleSuccessGoogle = (credentialResponse: CredentialResponse) => {
+    const decoded = jwtDecode(credentialResponse.credential || 'null');
+    
+    console.log('decoded', decoded);
 
-                if (response.success) {
-                    customerStore.setAuth({
-                        customer: response.data.info,
-                        token: response.data.accessToken,
-                    });
-                    //Đóng modal login
-                    onCloseModal?.();
-                    messageApi?.success(response.message);
-                }
-            } else {
-                console.error('Không thể giải mã token JWT từ Google.');
-            }
-        } catch (error) {
-            console.error('Lỗi khi giải mã token:', error);
-        }
-    }
+    // const payload = {
+    //     googleId: decoded.sub,
+    //     email: decoded.email,
+    //     name: decoded.name,
+    //     picture: decoded.picture,
+    //     accessToken: credentialResponse.credential
+    // }
+
+    // console.log('payload', payload);
+}
+
+const handleErrorGoogle = () => {
+    console.log('errorGoogle');
+}
+
+
 
     // Hàm xử lý khi form gửi thành công
     const onFinish = (values: any) => {
@@ -57,31 +41,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onCloseModal }) 
         // Thêm logic API login ở đây
     };
 
-    //#region Facebook Login
-    const handleSuccessFacebook = async (fbProfile: any) => {
-        try {
-            const payload = {
-                facebookId: fbProfile.id,
-                fullName: fbProfile.name,
-                avatarUrl: fbProfile.picture?.data?.url,
-                email: fbProfile.email || 'Heroic@gmail.com',
-            }
-            const apiResponse = await authApi.loginFacebook(payload);
-            if (apiResponse.success && apiResponse.data?.info && apiResponse.data?.accessToken) {
-                customerStore.setAuth({
-                    customer: apiResponse.data.info,
-                    token: apiResponse.data.accessToken,
-                });
-                onCloseModal?.();
-                messageApi?.success(apiResponse.message);
-            } else if (apiResponse.success) {
-                messageApi?.success(apiResponse.message);
-            }
-        } catch (error) {
-            console.error('Lỗi khi xử lý login Facebook:', error);
-        }
+    const handleSuccessFacebook = (response: any) => {
+        // Includes accessToken for follow-up Graph calls
+        console.log('facebook auth', response);
     }
-    //#endregion
 
     // Hàm xử lý khi bấm vào link đăng ký ngay
     const handleRegisterClick = () => {
@@ -140,21 +103,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onCloseModal }) 
                                 appId={import.meta.env.VITE_FB_APP_ID || ''}
                                 scope="public_profile"
                                 fields="name,picture"
+                                onSuccess={handleSuccessFacebook}
                                 onFail={(error) => console.error('Facebook login failed', error)}
-                                onProfileSuccess={(response) => handleSuccessFacebook(response)}
+                                onProfileSuccess={(response) => console.log('profile', response)}
                                 className="w-full h-10 rounded border border-gray-300 flex items-center justify-center text-gray-700 font-medium hover:bg-gray-100 transition-colors"
                             >
-                                <span className="flex items-center gap-2">
-                                    <img src={icFacebook} alt="Facebook" className="w-4 h-4" />
-                                    <span>Facebook</span>
-                                </span>
+                                Facebook
                             </FacebookLogin>
+
                         </div>
                         <div className='w-1/2 ml-2' style={{ display: 'flex', justifyContent: 'center' }}>
                             <div>
                                 <GoogleLogin
                                     onSuccess={(credentialResponse) => {
                                         handleSuccessGoogle(credentialResponse);
+                                    }}
+                                    onError={() => {
+                                        handleErrorGoogle();
                                     }}
                                     useOneTap={false}
                                     shape="rectangular"

@@ -14,9 +14,6 @@ dist
 dist-ssr
 *.local
 
-#docx
-docx/*
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -28,4 +25,3 @@ docx/*
 *.sln
 *.sw?
 .env
-
