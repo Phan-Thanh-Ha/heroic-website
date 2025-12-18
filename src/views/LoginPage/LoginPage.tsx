@@ -61,6 +61,9 @@ export const LoginPageModal = React.forwardRef<LoginPageModalRef, LoginPageProps
                             registerModalRef.current?.handleOpen();
                             console.log('registerModalRef', registerModalRef);
                         }}
+                        onCloseModal={() => {
+                            handleClose();
+                        }}
                     />
                 </div>
             </Modal>

@@ -1,13 +1,15 @@
 import banner from '@/assets/banner.jpg.webp';
 import logo from '@/assets/icon-512.svg';
+import { customerStore, useCustomerStore } from '@/store';
 import { LoginPageModal, type LoginPageModalRef, } from '@/views/LoginPage/LoginPage';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Image, Input, Layout } from 'antd';
+import { observer } from 'mobx-react-lite';
 import { useRef } from 'react';
 
 const { Header: AntHeader } = Layout
-const Header = () => {
-  // 💡 SỬA: KHAI BÁO HOOKS VÀ HÀM SỬ DỤNG HOOKS Ở ĐÂY
+const Header = observer(() => {
+  const { isAuthenticated } = useCustomerStore();
   const modalRef = useRef<LoginPageModalRef>(null);
 
   // Hàm xử lý khi bấm nút (sử dụng modalRef)
@@ -52,9 +54,19 @@ const Header = () => {
             />
           </div>
           <div className='flex  items-center gap-2 justify-center mt-4'>
-            <Button type="dashed" icon={<UserOutlined />} onClick={handleLoginClick}>
-              Đăng nhập / Đăng ký
-            </Button>
+            {!isAuthenticated ? (
+              <Button type="dashed" icon={<UserOutlined />} onClick={handleLoginClick}>
+                Đăng nhập / Đăng ký
+              </Button>
+            ) : (
+              <Button
+                type="dashed"
+                icon={<UserOutlined />}
+                onClick={() => customerStore.logout()}
+              >
+                Đăng xuất
+              </Button>
+            )}
           </div>
         </div>
       </AntHeader>
@@ -66,6 +78,6 @@ const Header = () => {
 
     </div>
   );
-};
+});
 
 export default Header
