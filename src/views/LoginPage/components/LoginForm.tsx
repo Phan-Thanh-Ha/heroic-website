@@ -33,13 +33,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onCloseModal }) 
                     avatarUrl: (decoded as any).picture,
                 }
                 const response = await authApi.loginGoogle(payload);
-                
-                if(response.success){
-                    console.log("🚀 🇵 🇭: ~ response.data.info:", response.data.info)
-                    console.log("🚀 🇵 🇭: ~ response.data.accessToken:", response.data.accessToken)
+
+                if (response.success) {
                     customerStore.setAuth({
                         customer: response.data.info,
-                        token: response.data.accessToken
+                        token: response.data.accessToken,
                     });
                     //Đóng modal login
                     onCloseModal?.();
@@ -69,7 +67,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onCloseModal }) 
                 email: fbProfile.email || 'Heroic@gmail.com',
             }
             const apiResponse = await authApi.loginFacebook(payload);
-            if (apiResponse.success) {
+            if (apiResponse.success && apiResponse.data?.info && apiResponse.data?.accessToken) {
+                customerStore.setAuth({
+                    customer: apiResponse.data.info,
+                    token: apiResponse.data.accessToken,
+                });
+                onCloseModal?.();
+                messageApi?.success(apiResponse.message);
+            } else if (apiResponse.success) {
                 messageApi?.success(apiResponse.message);
             }
         } catch (error) {
