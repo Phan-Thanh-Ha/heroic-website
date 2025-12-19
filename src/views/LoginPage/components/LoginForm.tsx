@@ -67,14 +67,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onCloseModal }) 
                 email: fbProfile.email || 'Heroic@gmail.com',
             }
             const apiResponse = await authApi.loginFacebook(payload);
-            if (apiResponse.success && apiResponse.data?.info && apiResponse.data?.accessToken) {
-                customerStore.setAuth({
-                    customer: apiResponse.data.info,
-                    token: apiResponse.data.accessToken,
-                });
+            if (apiResponse.success) {
+                    customerStore.setAuth({
+                        customer: apiResponse.data.info,
+                        token: apiResponse.data.accessToken,
+                    });
+                // Đóng modal bất cứ khi nào login Facebook trả success
                 onCloseModal?.();
-                messageApi?.success(apiResponse.message);
-            } else if (apiResponse.success) {
                 messageApi?.success(apiResponse.message);
             }
         } catch (error) {

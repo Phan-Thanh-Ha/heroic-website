@@ -34,6 +34,7 @@ class CustomerStore {
     }
 
     setAuth(data: { customer: ICustomer; token: string }) {
+        console.log('setAuth', data);
         this.customers = data.customer;
         this.accessToken = data.token;
         // Chuẩn hoá provider về Uppercase để so sánh chính xác
