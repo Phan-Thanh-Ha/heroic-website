@@ -1,8 +1,6 @@
 import banner from '@/assets/banner.jpg.webp';
 import logo from '@/assets/icon-512.svg';
-import flagCn from '@/assets/icons/ic-flag-cn.svg';
-import flagEn from '@/assets/icons/ic-flag-en.svg';
-import flagVi from '@/assets/icons/ic-flag-vi.svg';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { customerStore, useCustomerStore } from '@/store';
 import {
   LoginPageModal,
@@ -10,7 +8,6 @@ import {
 } from '@/views/LoginPage/LoginPage';
 import {
   BellOutlined,
-  DownOutlined,
   LogoutOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
@@ -30,13 +27,12 @@ import {
   Tooltip,
 } from 'antd';
 import { observer } from 'mobx-react-lite';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const { Header: AntHeader } = Layout;
 const Header = observer(() => {
   const { isAuthenticated } = useCustomerStore();
   const modalRef = useRef<LoginPageModalRef>(null);
-  const [language, setLanguage] = useState<'vi' | 'en' | 'cn'>('vi');
 
   // Hàm xử lý khi bấm nút (sử dụng modalRef)
   const handleLoginClick = () => {
@@ -46,43 +42,6 @@ const Header = observer(() => {
   const handleLogout = () => {
     customerStore.logout();
   };
-
-  const handleChangeLanguage = (lang: 'vi' | 'en' | 'cn') => {
-    setLanguage(lang);
-    // TODO: Tích hợp i18n tại đây (ví dụ: i18next.changeLanguage(lang))
-    console.log('Đổi ngôn ngữ sang:', lang);
-  };
-
-  const getLanguageLabel = (lang: 'vi' | 'en' | 'cn') => {
-    if (lang === 'vi') return 'Tiếng Việt';
-    if (lang === 'en') return 'English';
-    return '中文';
-  };
-
-  const getFlagSrc = (lang: 'vi' | 'en' | 'cn') => {
-    if (lang === 'vi') return flagVi;
-    if (lang === 'en') return flagEn;
-    return flagCn;
-  };
-
-  // Ngôn ngữ mặc định là Tiếng Việt.
-  // Menu chỉ hiển thị các ngôn ngữ KHÁC với ngôn ngữ đang chọn.
-  const languageMenuItems: MenuProps['items'] = (['vi', 'cn', 'en'] as const)
-    .filter((code) => code !== language)
-    .map((code) => ({
-      key: code,
-      label: (
-        <span className="flex items-center gap-2">
-          <img
-            src={getFlagSrc(code)}
-            alt={getLanguageLabel(code)}
-            className="w-4 h-4"
-          />
-          <span>{getLanguageLabel(code)}</span>
-        </span>
-      ),
-      onClick: () => handleChangeLanguage(code),
-    }));
 
   const profileMenuItems: MenuProps['items'] = [
     {
@@ -147,31 +106,8 @@ const Header = observer(() => {
               </Button>
             ) : (
               <Row align="middle" gutter={[16, 16]}>
-                {/* Khối ngôn ngữ (cờ + mũi tên, nền trong suốt) */}
-                <Col className='mr-10'>
-                  <Dropdown
-                    menu={{ items: languageMenuItems }}
-                    trigger={['click']}
-                    arrow
-                    placement="bottomCenter"
-                    className='w-full'
-                  >
-                    <Button
-                      type="text"
-                      icon={
-                        <span className="flex items-center gap-1">
-                          <img
-                            src={getFlagSrc(language)}
-                            alt={getLanguageLabel(language)}
-                            className="w-10 h-5"
-                          />
-                          <DownOutlined style={{ fontSize: 10, color: '#ffffff' }} />
-                        </span>
-                      }
-                      style={{ padding: 0, height: 'auto' }}
-                    />
-                  </Dropdown>
-                </Col>
+                {/* Khối ngôn ngữ */}
+                <LanguageSwitcher />
                 {/* Khối Avatar & Tên + Menu Profile */}
                 <Col>
                     <Dropdown
@@ -209,9 +145,11 @@ const Header = observer(() => {
                 <Col className="hidden-sm">
                   <Space size="small">
                     <Tooltip title="Giỏ hàng">
-                      <Badge count={5} size="small">
-                        <ShoppingCartOutlined style={{ color: 'white', fontSize: 24 }} />
-                      </Badge>
+                      <a href="/cart">
+                        <Badge count={5} size="small">
+                          <ShoppingCartOutlined style={{ color: 'white', fontSize: 24 }} />
+                        </Badge>
+                      </a>
                     </Tooltip>
                     <div className="flex flex-col text-white leading-tight al ">
                       <span className="text-xs opacity-80">Thành tiền</span>
