@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Banner } from "@/components";
+import { Banner, FeaturedCategories } from "@/components";
 import banner1 from '@/assets/images/banner2.webp';
 import banner2 from '@/assets/images/banner3.webp';
 import { Image } from "antd";
@@ -10,7 +10,7 @@ export const Home = ({ title = "" }) => {
 
     return (
         <>
-            <div className="2xl:grid grid-cols-3 grid-rows-3 gap-4">
+            <div className="2xl:grid grid-cols-3 grid-rows-3 gap-4 mb-8">
                 <div className="2xl:col-span-2 2xl:row-span-3">
                     <Banner height={300} />
                 </div>
@@ -22,6 +22,7 @@ export const Home = ({ title = "" }) => {
                     <Image src={banner2} alt="banner" style={{ borderRadius: 8 }} />
                 </div>
             </div>
+            <FeaturedCategories />
         </>
     );
 };
