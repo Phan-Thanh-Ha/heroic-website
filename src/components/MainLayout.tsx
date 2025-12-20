@@ -1,24 +1,21 @@
 import React from "react";
-import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
+import Banner from "./Banner";
 import Header from "./Header";
 import Footer from "./Footer";
 
-const { Content } = Layout;
-
 const MainLayout: React.FC = () => {
     return (
-        <Layout className="h-full w-full"> 
+        <div className="h-full w-full flex flex-col min-h-screen">
+            {/* Banner ở trên */}
+            <Banner />
+            {/* Header menu ở dưới banner */}
             <Header />
-
-            <Content className="flex-1 bg-white p-50 pt-5">
-                <div className="min-h-[800px] justify-center">
-                    <Outlet />
-                </div>
-            </Content>
-
+            <main className="flex-1 bg-background">
+                <Outlet />
+            </main>
             <Footer />
-        </Layout>
+        </div>
     );
 };
 

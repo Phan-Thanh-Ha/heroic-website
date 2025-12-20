@@ -5,7 +5,7 @@ import type {
     AxiosResponse,
     InternalAxiosRequestConfig,
 } from "axios";
-import { getMessageInstance } from "../util/messageService";
+import { toast } from "sonner";
 
 
 export interface ApiResponse<T = any> {
@@ -69,8 +69,6 @@ apiClient.interceptors.response.use(
         return response.data;
     },
     (error: AxiosError) => {
-        const messageApi = getMessageInstance();
-        
         if (error.response) {
             const status = error.response.status;
             const apiData = error.response.data as any;
@@ -93,13 +91,13 @@ apiClient.interceptors.response.use(
             }
 
             // Hiển thị thông báo lỗi cho các trường hợp khác
-            messageApi?.error({ content: errorMessage, duration: 4 });
+            toast.error(errorMessage, { duration: 4000 });
             return Promise.reject({ status, message: errorMessage });
         }
 
         // Lỗi kết nối (Network error)
         const networkError = "Lỗi kết nối, vui lòng kiểm tra internet";
-        messageApi?.error({ content: networkError });
+        toast.error(networkError);
         return Promise.reject({ status: 0, message: networkError });
     }
 );

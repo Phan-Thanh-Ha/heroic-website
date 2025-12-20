@@ -1,7 +1,0 @@
-export { default as MainLayout } from './MainLayout'
-export { default as Header } from './Header'
-export { default as Footer } from './Footer'
-export { default as Banner } from './Banner'
-export { default as LanguageSwitcher } from './LanguageSwitcher'
-export { ProtectedRoute } from './ProtectedRoute'
-export { default as FeaturedCategories } from './FeaturedCategories'

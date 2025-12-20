@@ -1,13 +1,14 @@
-import { AppThemeProvider } from '@/providers'
-import './App.css'
-import { RouterProvider } from "react-router-dom";
+import { Button } from '@/components/ui/button'
+import { RouterProvider } from 'react-router-dom'
+import { toast } from 'sonner'
 import { router } from '@/routes';
 
 function App() {
+
   return (
-    <AppThemeProvider>
-      <RouterProvider router={router} />
-    </AppThemeProvider>
+    <>
+    <RouterProvider router={router} />
+    </>
   )
 }
 

@@ -16,20 +16,14 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Path alias */
+    /* Path aliases */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/api/*": ["./src/api/*"],
-      "@/assets/*": ["./src/assets/*"],
       "@/components/*": ["./src/components/*"],
+      "@/routes/*": ["./src/routes/*"],
       "@/views/*": ["./src/views/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/provider/*": ["./src/provider/*"],
-      "@/config/*": ["./src/config/*"],
-      "@/router/*": ["./src/router/*"],
-      "@/layouts/*": ["./src/layouts/*"],
+      "@/api/*": ["./src/api/*"]
     },
 
     /* Linting */

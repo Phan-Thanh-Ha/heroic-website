@@ -1,9 +1,9 @@
 import type { RouteObject } from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "@/components/MainLayout";
-import { Home } from "@/views/Home";
-import { NotFoundPage } from "@/views/errors/NotFoundPage";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 
 const routes: RouteObject[] = [
     {
@@ -16,17 +16,25 @@ const routes: RouteObject[] = [
             },
             {
                 path: "/cart",
-                element: <ProtectedRoute>
-                    <div>
-                        <h1>Cart</h1>
-                    </div>
-                </ProtectedRoute>,
+                element: <div>
+                    <h1>Cart</h1>
+                </div>,
             },
         ],
     },
     {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/register",
+        element: <Register />,
+    },
+    {
         path: "*",
-        element: <NotFoundPage />,
+        element: <div>
+            <h1>404</h1>
+        </div>,
     },
 ];
 
