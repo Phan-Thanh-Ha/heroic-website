@@ -16,18 +16,16 @@ import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-van
 import { useTheme } from "@/hooks/useTheme";
 import { Menu, Moon, Search, Sun, Bell, ShoppingCart, User } from "lucide-react";
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import AuthModal from "@/components/AuthModal";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { customerStore } from "@/store/customerStore";
 import LanguageSelector from "@/components/LanguageSelector";
 
 const Header: React.FC = observer(() => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const { theme, toggleTheme } = useTheme();
-    const [authModalOpen, setAuthModalOpen] = useState(false);
-    const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
     const isAuthenticated = customerStore.isAuthenticated;
     const customer = customerStore.customers;
 
@@ -168,10 +166,7 @@ const Header: React.FC = observer(() => {
                             <>
                                 {/* Đăng nhập Button */}
                                 <Button
-                                    onClick={() => {
-                                        setAuthModalTab("login");
-                                        setAuthModalOpen(true);
-                                    }}
+                                    onClick={() => navigate("/login")}
                                     className="relative inline-flex h-10 overflow-hidden rounded-full p-px focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
                                 >
                                     <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
@@ -208,13 +203,6 @@ const Header: React.FC = observer(() => {
                     </div>
                 </div>
             </div>
-
-            {/* Auth Modal */}
-            <AuthModal
-                open={authModalOpen}
-                onOpenChange={setAuthModalOpen}
-                defaultTab={authModalTab}
-            />
         </header>
     );
 });
