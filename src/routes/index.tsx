@@ -4,6 +4,7 @@ import MainLayout from "@/components/MainLayout";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import Profile from "@/pages/Profile";
 
 const routes: RouteObject[] = [
     {
@@ -30,6 +31,11 @@ const routes: RouteObject[] = [
         path: "/register",
         element: <Register />,
     },
+    {
+        path: "/profile",
+        element: <Profile />,
+    },
+
     {
         path: "*",
         element: <div>
