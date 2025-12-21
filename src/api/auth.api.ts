@@ -4,7 +4,7 @@ export const authApi = {
     // Đăng nhập
     login: (data: any): Promise<ApiResponse<any>> =>
         request({
-            url: "/v1/customers/auth/login",
+            url: "/v1/customers/auth/login/email",
             data,
             method: "post",
         }),
@@ -21,6 +21,14 @@ export const authApi = {
     loginFacebook: (data: any): Promise<ApiResponse<any>> =>
         request({
             url: "/v1/customers/auth/login/facebook",
+            data,
+            method: "post",
+        }),
+
+    //Register
+    register: (data: any): Promise<ApiResponse<any>> =>
+        request({
+            url: "/v1/customers/auth/register/email",
             data,
             method: "post",
         }),

@@ -7,11 +7,9 @@ import Footer from "./Footer";
 const MainLayout: React.FC = () => {
     return (
         <div className="h-full w-full flex flex-col min-h-screen">
-            {/* Banner ở trên */}
             <Banner />
-            {/* Header menu ở dưới banner */}
             <Header />
-            <main className="flex-1 bg-background">
+            <main className="flex-1 bg-background min-h-screen">
                 <Outlet />
             </main>
             <Footer />
