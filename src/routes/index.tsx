@@ -15,12 +15,7 @@ const routes: RouteObject[] = [
                 path: "/",
                 element: <Home />,
             },
-            {
-                path: "/cart",
-                element: <div>
-                    <h1>Cart</h1>
-                </div>,
-            },
+            
         ],
     },
     {
