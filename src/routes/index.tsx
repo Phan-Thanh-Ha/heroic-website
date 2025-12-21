@@ -2,9 +2,9 @@ import type { RouteObject } from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "@/components/MainLayout";
 import Home from "@/pages/Home";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
 import Profile from "@/pages/Profile";
+import LoginPage from "@/pages/Login/LoginPage";
+import RegisterPage from "@/pages/Register/RegisterPage";
 
 const routes: RouteObject[] = [
     {
@@ -21,20 +21,21 @@ const routes: RouteObject[] = [
                     <h1>Cart</h1>
                 </div>,
             },
+            {
+        path: "/profile",
+        element: <Profile />,
+    },
         ],
     },
     {
         path: "/login",
-        element: <Login />,
+        element: <LoginPage />,
     },
     {
         path: "/register",
-        element: <Register />,
+        element: <RegisterPage />,
     },
-    {
-        path: "/profile",
-        element: <Profile />,
-    },
+    
 
     {
         path: "*",
