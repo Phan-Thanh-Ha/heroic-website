@@ -1,4 +1,5 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,6 +18,8 @@ import { toast } from "sonner";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { customerStore } from "@/store/customerStore";
+import type { GoogleJwtPayload, GoogleLoginPayload } from "@/types/googleLogin";
+import OTPModal from "@/components/OTPModal";
 
 const loginSchema = z.object({
   email: z.string().email("Email không hợp lệ"),
@@ -31,7 +34,7 @@ interface LoginFormProps {
   showSwitchLink?: boolean;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({
+const LoginForm: React.FC<LoginFormProps> = observer(({
   onSuccess,
   onSwitchToRegister,
   showSwitchLink = true,
@@ -48,14 +51,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
     try {
       const response = await authApi.login(data);
       if (response.success && response.data) {
-        // Save auth to store
-        customerStore.setAuth({
-          customer: response.data.info || response.data.customer,
-          token: response.data.accessToken || response.data.token,
-        });
-        toast.success("Đăng nhập thành công!");
-        form.reset();
-        onSuccess?.();
+        // Luôn yêu cầu OTP sau khi login thành công
+        // Set state trong store để trigger modal OTP
+        customerStore.setRequiresOTP(data.email);
+        toast.success("Mã OTP đã được gửi đến email của bạn!");
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Đăng nhập thất bại");
@@ -64,32 +63,40 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
-      const decoded = jwtDecode(credentialResponse.credential || 'null');
+      const decoded = jwtDecode<GoogleJwtPayload>(credentialResponse.credential || 'null');
       if (decoded) {
         // Tạo payload từ decoded JWT
-        const payload = {
+        const payload: GoogleLoginPayload = {
           googleId: decoded.sub,
-          email: (decoded as any).email,
-          firstName: (decoded as any).family_name,
-          lastName: (decoded as any).given_name,
-          fullName: (decoded as any).name || `${(decoded as any).given_name} ${(decoded as any).family_name}`,
-          avatarUrl: (decoded as any).picture,
+          email: decoded.email,
+          firstName: decoded.family_name,
+          lastName: decoded.given_name,
+          fullName: decoded.name || `${decoded.given_name} ${decoded.family_name}`,
+          avatarUrl: decoded.picture,
         };
         
         const response = await authApi.loginGoogle(payload);
         if (response.success && response.data) {
-          // Save auth to store
-          customerStore.setAuth({
-            customer: response.data.info || response.data.customer,
-            token: response.data.accessToken || response.data.token,
-          });
-          toast.success("Đăng nhập thành công!");
-          form.reset();
-          onSuccess?.();
+          // Luôn yêu cầu OTP sau khi login thành công
+          // Set state trong store để trigger modal OTP
+          customerStore.setRequiresOTP(decoded.email);
+          toast.success("Mã OTP đã được gửi đến email của bạn!");
         }
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Đăng nhập Google thất bại");
+    }
+  };
+
+  const handleOTPSuccess = () => {
+    customerStore.clearOTPRequirement();
+    form.reset();
+    onSuccess?.();
+  };
+
+  const handleOTPClose = (open: boolean) => {
+    if (!open) {
+      customerStore.clearOTPRequirement();
     }
   };
 
@@ -199,9 +206,18 @@ const LoginForm: React.FC<LoginFormProps> = ({
           </p>
         </div>
       )}
+
+      <OTPModal
+        open={customerStore.requiresOTP}
+        onOpenChange={handleOTPClose}
+        email={customerStore.pendingEmail || undefined}
+        onSuccess={handleOTPSuccess}
+      />
     </div>
   );
-};
+});
+
+LoginForm.displayName = "LoginForm";
 
 export default LoginForm;
 

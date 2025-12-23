@@ -23,6 +23,8 @@ class CustomerStore {
     accessToken: string | null = null;
     loginProvider: string | null = null;
     loading = false;
+    requiresOTP = false;
+    pendingEmail: string | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -37,8 +39,19 @@ class CustomerStore {
         console.log('setAuth', data);
         this.customers = data.customer;
         this.accessToken = data.token;
-        // Chuẩn hoá provider về Uppercase để so sánh chính xác
         this.loginProvider = data.customer.typeRegister?.toUpperCase() ?? null;
+        this.requiresOTP = false;
+        this.pendingEmail = null;
+    }
+
+    setRequiresOTP(email: string) {
+        this.requiresOTP = true;
+        this.pendingEmail = email;
+    }
+
+    clearOTPRequirement() {
+        this.requiresOTP = false;
+        this.pendingEmail = null;
     }
 
     logout() {
@@ -60,6 +73,8 @@ class CustomerStore {
             this.customers = null;
             this.accessToken = null;
             this.loginProvider = null;
+            this.requiresOTP = false;
+            this.pendingEmail = null;
             
             // Xoá dữ liệu đã lưu trong LocalStorage
             clearPersistedStore(this);
