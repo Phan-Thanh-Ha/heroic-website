@@ -27,6 +27,10 @@ const routes: RouteObject[] = [
         element: <RegisterPage />,
     },
     
+    {
+        path: "/profile",
+        element: <Profile />,
+    },
 
     {
         path: "*",

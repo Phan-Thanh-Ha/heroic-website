@@ -30,6 +30,11 @@ const apiClient: AxiosInstance = axios.create({
 // --- 2. REQUEST INTERCEPTOR ---
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+        // QUAN TRỌNG: Nếu data là FormData, xóa Content-Type để axios tự động set multipart/form-data với boundary
+        if (config.data instanceof FormData) {
+            delete config.headers["Content-Type"];
+        }
+        
         config.headers.set("namespace", NAMESPACE);
         // Truyền timeZone từ trình duyệt
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -69,13 +74,15 @@ apiClient.interceptors.response.use(
         return response.data;
     },
     (error: AxiosError) => {
+        
+        console.log('lỗi error',)
         if (error.response) {
             const status = error.response.status;
             const apiData = error.response.data as any;
             
             // Lấy message từ server trả về, nếu không có thì dùng map ở trên
             const errorMessage = apiData?.message || ERROR_MESSAGES[status] || "Lỗi không xác định";
-
+                
             // Xử lý riêng lỗi 401 (Unauthorized)
             if (status === 401) {
                 const isAuthPage = window.location.pathname.match(/\/(login|register)/);
@@ -98,6 +105,7 @@ apiClient.interceptors.response.use(
         // Lỗi kết nối (Network error)
         const networkError = "Lỗi kết nối, vui lòng kiểm tra internet";
         toast.error(networkError);
+        
         return Promise.reject({ status: 0, message: networkError });
     }
 );
