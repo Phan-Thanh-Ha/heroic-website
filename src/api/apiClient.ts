@@ -16,7 +16,7 @@ export interface ApiResponse<T = any> {
     data: T
 }
 
-const BASE_URL = "http://192.168.2.3:3102";
+const BASE_URL = "http://192.168.2.6:3102";
 const NAMESPACE = "heroic-shop";
 
 const apiClient: AxiosInstance = axios.create({
@@ -32,7 +32,18 @@ apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // QUAN TRỌNG: Nếu data là FormData, xóa Content-Type để axios tự động set multipart/form-data với boundary
         if (config.data instanceof FormData) {
-            delete config.headers["Content-Type"];
+            console.log("📤 Detected FormData, removing Content-Type header...");
+            // Xóa Content-Type từ tất cả các nơi để axios tự động set multipart/form-data với boundary đúng cách
+            // Axios sẽ tự động set Content-Type: multipart/form-data; boundary=... khi gặp FormData
+            if (config.headers) {
+                // Xóa Content-Type từ headers thông thường
+                delete config.headers["Content-Type"];
+                // Xóa Content-Type từ common headers (axios default)
+                if (config.headers.common) {
+                    delete config.headers.common["Content-Type"];
+                }
+            }
+            console.log("✅ Content-Type removed, axios will auto-set multipart/form-data");
         }
         
         config.headers.set("namespace", NAMESPACE);
@@ -103,8 +114,28 @@ apiClient.interceptors.response.use(
         }
 
         // Lỗi kết nối (Network error)
-        const networkError = "Lỗi kết nối, vui lòng kiểm tra internet";
-        toast.error(networkError);
+        let networkError = "Lỗi kết nối, vui lòng kiểm tra internet";
+        
+        // Kiểm tra loại lỗi network cụ thể
+        if (error.code === "ERR_NETWORK" || error.message?.includes("ERR_ADDRESS_UNREACHABLE")) {
+            networkError = `Không thể kết nối đến server tại ${BASE_URL}. Vui lòng kiểm tra:\n- Server đã được khởi động chưa?\n- Địa chỉ IP và port có đúng không?\n- Firewall có chặn kết nối không?`;
+        } else if (error.code === "ECONNREFUSED") {
+            networkError = `Kết nối bị từ chối tại ${BASE_URL}. Server có thể đang tắt hoặc không chấp nhận kết nối.`;
+        } else if (error.code === "ETIMEDOUT") {
+            networkError = `Kết nối timeout. Server tại ${BASE_URL} không phản hồi.`;
+        }
+        
+        console.error("❌ Network Error:", {
+            code: error.code,
+            message: error.message,
+            config: {
+                url: error.config?.url,
+                method: error.config?.method,
+                baseURL: error.config?.baseURL
+            }
+        });
+        
+        toast.error(networkError, { duration: 6000 });
         
         return Promise.reject({ status: 0, message: networkError });
     }

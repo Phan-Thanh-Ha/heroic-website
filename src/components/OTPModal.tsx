@@ -76,6 +76,7 @@ const OTPModal: React.FC<OTPModalProps> = ({
                 customerStore.setAuth({
                     customer: response.data.info || response.data.customer,
                     token: response.data.accessToken || response.data.token,
+                    
                 });
                 toast.success("Xác thực OTP thành công!");
                 setOtp("");

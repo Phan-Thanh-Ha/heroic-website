@@ -104,17 +104,26 @@ export default function Profile() {
             // 'file' là key mà Server yêu cầu (theo curl -F 'file=...')
             formData.append('file', file); 
             console.log("File Object:", file);
-            // 3. Chuẩn bị các tham số Query (folder, customerCode)
-            // customerCode nên lấy từ state hoặc props, ở đây mình điền cứng theo ví dụ cũ
+            console.log("File size:", file.size, "bytes");
+            console.log("File type:", file.type);
             
+            // Debug: Kiểm tra FormData
+            console.log("FormData entries:");
+            for (const [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
             
             // 4. Gọi API
-            // Lưu ý: Mình tách formData và params ra để dễ xử lý ở tầng API service
             const response = await uploadApi.uploadAvatar(formData);
             
             console.log('Upload thành công:', response);
+            
+            // Cập nhật preview với URL từ server nếu có
+            if (response?.data?.url) {
+                setPreview(response.data.url);
+            }
 
-        } catch (error) {
+        } catch (error: any) {
             console.error('Lỗi upload:', error);
         }
     }
