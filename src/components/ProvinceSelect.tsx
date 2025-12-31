@@ -26,7 +26,7 @@ export const ProvinceSelect = ({
         try {
             const response = await locationApi.getAllProvinces()
             if (response.success) {
-                setProvinces(response.data.result || [])
+                setProvinces(response.data.items || [])
             }
         } catch (error) {
             console.error("Error fetching provinces:", error)

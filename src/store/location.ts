@@ -40,10 +40,9 @@ class LocationStore {
         
         const response = await locationApi.getDistrictsByProvinceCode(provinceCode);
         if (response.success) {
-            console.log(response.data.result);
             // Wrap các thay đổi observable trong runInAction
             runInAction(() => {
-                this.districts = response.data.result || [];
+                this.districts = response.data.items || [];
                 this.setResetDistricts(false);
             });
         }
@@ -51,16 +50,16 @@ class LocationStore {
 
     // Lấy danh sách wards theo district code
     async getWardsByDistrictCode(districtCode: string) {
+        console.log('districtCode', districtCode)
         runInAction(() => {
             this.setResetWards(true);
             this.wards = [];
         });
         
         const response = await locationApi.getWardsByDistrictCode(districtCode);
-        console.log("🚀 🇵 🇭: ~ location.ts:60 ~ response:", response)
         if (response.success) {
             runInAction(() => {
-                this.wards = response.data.result || [];
+                this.wards = response.data.items || [];
                 this.setResetWards(false);
             });
         }

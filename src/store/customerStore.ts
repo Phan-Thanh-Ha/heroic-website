@@ -1,4 +1,4 @@
-import type { ICustomer } from "@/types/customer";
+import type { ICustomer } from "@/types";
 import { makeAutoObservable } from "mobx";
 import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import { googleLogout } from "@react-oauth/google";
@@ -39,7 +39,7 @@ class CustomerStore {
         console.log('setAuth', data);
         this.customers = data.customer;
         this.accessToken = data.token;
-        this.loginProvider = data.customer.typeRegister?.toUpperCase() ?? null;
+        this.loginProvider = data.customer.typeLogin?.toUpperCase() ?? null;
         this.requiresOTP = false;
         this.pendingEmail = null;
     }

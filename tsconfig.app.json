@@ -23,7 +23,8 @@
       "@/components/*": ["./src/components/*"],
       "@/routes/*": ["./src/routes/*"],
       "@/views/*": ["./src/views/*"],
-      "@/api/*": ["./src/api/*"]
+      "@/api/*": ["./src/api/*"],
+      "@/types/*": ["./src/types/*"],
     },
 
     /* Linting */
