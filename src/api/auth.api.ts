@@ -1,5 +1,6 @@
-import request, { type ApiResponse } from "@/api/apiClient";
+import request from "@/api/apiClient";
 import type { GoogleLoginPayload } from "@/types/googleLogin";
+import type { ApiResponse } from "@/types/api-response";
 
 export const authApi = {
     // Đăng nhập
@@ -37,7 +38,7 @@ export const authApi = {
     //Verify OTP
     verifyOTP: (data: { otp: string; email?: string }): Promise<ApiResponse<any>> =>
         request({
-            url: "/v1/customers/auth/verify-otp",
+            url: "/v1/customers/auth/login/verify-otp",
             data,
             method: "post",
         }),

@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { authApi } from "@/api/auth.api";
 import { toast } from "sonner";
 import { customerStore } from "@/store/customerStore";
+import { useNavigate } from "react-router-dom";
 
 interface OTPModalProps {
     open: boolean;
@@ -33,7 +34,7 @@ const OTPModal: React.FC<OTPModalProps> = ({
     const [isLoading, setIsLoading] = useState(false);
     const [timer, setTimer] = useState(60);
     const [canResend, setCanResend] = useState(false);
-
+    const navigate = useNavigate();
     useEffect(() => {
         if (open) {
             setOtp("");
@@ -78,13 +79,17 @@ const OTPModal: React.FC<OTPModalProps> = ({
                     token: response.data.accessToken || response.data.token,
                     
                 });
-                toast.success("Xác thực OTP thành công!");
+                toast.success(response.message);
+                // chuyển đến trang home
+                navigate("/");
                 setOtp("");
                 onOpenChange(false);
                 onSuccess?.();
+            }else{
+                toast.error(response?.message );
             }
         } catch (error: any) {
-            toast.error(error?.response?.data?.message || "Mã OTP không hợp lệ");
+            console.log(error);
             setOtp("");
         } finally {
             setIsLoading(false);

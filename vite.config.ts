@@ -13,6 +13,7 @@ export default defineConfig({
       '@/routes': path.resolve(__dirname, './src/routes'),
       '@/views': path.resolve(__dirname, './src/views'),
       '@/api': path.resolve(__dirname, './src/api'),
+      '@/types': path.resolve(__dirname, './src/types'),
     },
   },
 })
