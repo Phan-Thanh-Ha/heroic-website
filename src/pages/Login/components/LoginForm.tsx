@@ -20,6 +20,7 @@ import { jwtDecode } from "jwt-decode";
 import { customerStore } from "@/store/customerStore";
 import type { GoogleJwtPayload, GoogleLoginPayload } from "@/types/googleLogin";
 import OTPModal from "@/components/OTPModal";
+import { Spinner } from "@/components/ui/spinner";
 
 const loginSchema = z.object({
   email: z.string().email("Email không hợp lệ"),
@@ -166,8 +167,11 @@ const LoginForm: React.FC<LoginFormProps> = observer(({
             </div>
           </div>
 
-          <Button type="submit" className="w-full">
-            Đăng nhập
+          <Button type="submit" className="w-full" >
+          <Spinner className="w-4 h-4" style={{ display: form.formState.isSubmitting ? 'block' : 'none' }} />
+            <span style={{ display: form.formState.isSubmitting ? 'none' : 'block' }}>
+              Đăng nhập
+            </span>
           </Button>
         </form>
       </Form>

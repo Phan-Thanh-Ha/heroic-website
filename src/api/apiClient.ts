@@ -16,8 +16,8 @@ export interface ApiResponse<T = any> {
     data: T
 }
 
-const BASE_URL = "http://192.168.2.3:3102";
-const NAMESPACE = "heroic-shop";
+const BASE_URL = import.meta.env.VITE_API_URL;
+const NAMESPACE = import.meta.env.VITE_NAMESPACE;
 
 const apiClient: AxiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -33,7 +33,7 @@ apiClient.interceptors.request.use(
         config.headers.set("namespace", NAMESPACE);
         // Truyền timeZone từ trình duyệt
         const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-        config.headers.set("x-timezone", timeZone);
+        config.headers.set("x-time-zone", timeZone);
 
         // Truyền ngôn ngữ từ trình duyệt
         const language = navigator.language || "vi-VN";
@@ -42,10 +42,7 @@ apiClient.interceptors.request.use(
         // Lấy token thật từ localStorage
         const token = localStorage.getItem("accessToken");
         if (token) {
-            config.headers.set("token", token);
-        } else {
-            // Tạm thời để test như bạn muốn, nhưng nên dùng token thật
-            config.headers.set("token", "1"); 
+            config.headers.set("x-access-token", token);
         }
         return config;
     },
