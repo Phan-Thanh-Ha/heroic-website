@@ -1,7 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
-import type { IDistrict } from '@/types/district'
+import type { IDistrict } from '@/types/district.type'
 import { locationStore } from '@/store'
 
 interface DistrictSelectProps {
@@ -11,7 +11,7 @@ interface DistrictSelectProps {
     loading?: boolean;
 }
 
-export const DistrictSelect = observer(({ onValueChange, value, disabled, loading }: DistrictSelectProps) => {
+const DistrictSelect = observer(({ onValueChange, value, disabled, loading }: DistrictSelectProps) => {
     const { districts, resetDistricts } = locationStore
     const [isOpen, setIsOpen] = useState(false)
 
@@ -61,3 +61,4 @@ export const DistrictSelect = observer(({ onValueChange, value, disabled, loadin
         </Select>
     )
 })
+export default DistrictSelect;

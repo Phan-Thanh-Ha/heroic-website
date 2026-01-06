@@ -7,8 +7,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-      
+      "@/*": ["./src/*"],
+      "@/components": ["./src/components"],
+      "@/routes": ["./src/routes"],
+      "@/views": ["./src/views"],
+      "@/api": ["./src/api"],
+      "@/types": ["./src/types"],
+      "@/utils": ["./src/utils"]
     }
   }
 }

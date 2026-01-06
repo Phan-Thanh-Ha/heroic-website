@@ -5,6 +5,7 @@ import Home from "@/pages/Home";
 import Profile from "@/pages/Profile";
 import LoginPage from "@/pages/Login/LoginPage";
 import RegisterPage from "@/pages/Register/RegisterPage";
+import ProductDetailPage from "@/pages/Product/ProductDetail";
 
 const routes: RouteObject[] = [
     {
@@ -14,6 +15,10 @@ const routes: RouteObject[] = [
             {
                 path: "/",
                 element: <Home />,
+            },
+            {
+                path: "/products/:slug",
+                element: <ProductDetailPage />,
             },
             
         ],

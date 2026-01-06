@@ -1,6 +1,6 @@
 import request from "@/api/apiClient";
-import type { GoogleLoginPayload } from "@/types/googleLogin";
-import type { ApiResponse } from "@/types/api-response";
+import type { GoogleLoginPayload } from "@/types/googleLogin.type";
+import type { ApiResponse } from "@/types/api-response.type";
 
 export const authApi = {
     // Đăng nhập

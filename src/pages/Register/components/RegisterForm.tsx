@@ -1,7 +1,7 @@
 import { PasswordInput } from "@/components/PasswordInput";
-import { ProvinceSelect } from "@/components/ProvinceSelect";
-import { DistrictSelect } from "@/components/DistrictSelect";
-import { WardSelect } from "@/components/WardSelect";
+import ProvinceSelect from "@/components/ProvinceSelect";
+import DistrictSelect from "@/components/DistrictSelect";
+import WardSelect from "@/components/WardSelect";
 import { Button } from "@/components/ui/button";
 import {
   Form,

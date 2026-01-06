@@ -1,3 +1,4 @@
+import { customerStore } from "@/store/customerStore";
 import axios from "axios";
 import type {
     AxiosError,
@@ -39,16 +40,16 @@ apiClient.interceptors.request.use(
         if (config.data instanceof FormData) {
             delete headers["Content-Type"];
         }
-        
+
         headers["namespace"] = NAMESPACE;
         headers["x-time-zone"] = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
         headers["x-language"] = navigator.language || "vi-VN";
-        
-        const token = localStorage.getItem("accessToken");
+
+        const token = customerStore.accessToken;
         if (token) {
             headers["x-access-token"] = token; // Bearer token
         }
-        
+
         // --- LOGGING REQUEST ---
         // Gom nhóm log để console gọn gàng
         console.groupCollapsed(`🚀 REQUEST: ${config.method?.toUpperCase()} ${config.url}`);
@@ -93,10 +94,11 @@ apiClient.interceptors.response.use(
                 const isAuthPage = window.location.pathname.match(/\/(login|register)/);
                 if (!isAuthPage) {
                     errorMessage = "Phiên đăng nhập hết hạn.";
+                    window.location.href = "/login";
                     // Logic logout...
                 }
             }
-            
+
             if (status >= 500) {
                 errorMessage = "Hệ thống đang gặp sự cố. Vui lòng thử lại sau.";
             }
@@ -118,7 +120,7 @@ apiClient.interceptors.response.use(
             } else {
                 errorMessage = error.message;
             }
-            
+
             console.log(`🔥 NETWORK ERROR:`, errorMessage);
         }
 

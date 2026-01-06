@@ -1,9 +1,17 @@
-import React from "react";
-import ProductBanner from "@/components/ProductBanner";
-import CategoryBanner from "@/components/CategoryBanner";
 import BrandBanner from "@/components/BrandBanner";
+import CategoryBanner from "@/components/CategoryBanner";
+import { CategorySection } from "@/components/product/CategorySection";
+import ProductBanner from "@/components/ProductBanner";
+import { categoryStore } from "@/store/categoryStore";
+import type { ICategory } from "@/types";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
 
-const Home: React.FC = () => {
+const Home: React.FC =  observer(() => {
+    const { categories, isLoading } = categoryStore;
+    useEffect(() => {
+        categoryStore.getCategoryList();
+    }, []);
     return (
         <div className="w-full">
             {/* Product Banner với carousel */}
@@ -16,15 +24,18 @@ const Home: React.FC = () => {
             <BrandBanner />
 
             {/* Nội dung trang Home */}
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-4">Chào mừng đến với Heroic</h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                    Trang chủ của bạn sẽ được hiển thị ở đây.
-                </p>
+            <div className="bg-[#F8F9FA] min-h-screen">
+                {categories.map((cat: ICategory) => (
+                    <CategorySection
+                        key={cat.id}
+                        category={cat}
+                        products={cat.products}
+                    />
+                ))}
             </div>
         </div>
     );
-};
+});
 
 export default Home;
 

@@ -1,7 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
-import type { IWard } from '@/types/wards'
+import type { IWard } from '@/types/wards.type'
 import { locationStore } from '@/store'
 
 interface WardSelectProps {
@@ -11,7 +11,7 @@ interface WardSelectProps {
     disabled?: boolean
 }
 
-export const WardSelect = observer(({ onValueChange, value, districtId, disabled }: WardSelectProps) => {
+const WardSelect: React.FC<WardSelectProps> = observer(({ onValueChange, value, districtId, disabled }) => {
     const { wards, resetWards } = locationStore
     const [isOpen, setIsOpen] = useState(false)
 
@@ -86,3 +86,4 @@ export const WardSelect = observer(({ onValueChange, value, districtId, disabled
     )
 })
 
+export default WardSelect;

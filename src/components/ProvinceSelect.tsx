@@ -1,7 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { locationApi } from '@/api/location.api'
 import { useEffect, useState, useCallback } from 'react'
-import type { IProvince } from '@/types/province'
+import type { IProvince } from '@/types/province.type'
 
 interface ProvinceSelectProps {
     onValueChange?: (item: IProvince | null) => void
@@ -11,13 +11,13 @@ interface ProvinceSelectProps {
     disabled?: boolean
 }
 
-export const ProvinceSelect = ({ 
+const ProvinceSelect: React.FC<ProvinceSelectProps> = ({ 
     onValueChange, 
     value,
     placeholder = "Chọn tỉnh/thành phố",
     className,
     disabled
-}: ProvinceSelectProps) => {
+}) => {
     const [provinces, setProvinces] = useState<IProvince[]>([])
     const [loading, setLoading] = useState(false)
 
@@ -76,3 +76,4 @@ export const ProvinceSelect = ({
         </div>
     )
 }
+export default ProvinceSelect;

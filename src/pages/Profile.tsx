@@ -1,13 +1,13 @@
 import { uploadApi } from "@/api/upload.api";
-import { DistrictSelect } from "@/components/DistrictSelect";
-import { ProvinceSelect } from "@/components/ProvinceSelect";
+import DistrictSelect from "@/components/DistrictSelect"; 
+import ProvinceSelect from "@/components/ProvinceSelect";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { WardSelect } from "@/components/WardSelect";
+import WardSelect from "@/components/WardSelect";
 import { locationStore } from "@/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";

@@ -14,6 +14,7 @@ export default defineConfig({
       '@/views': path.resolve(__dirname, './src/views'),
       '@/api': path.resolve(__dirname, './src/api'),
       '@/types': path.resolve(__dirname, './src/types'),
+      '@/utils': path.resolve(__dirname, './src/utils'),
     },
   },
 })

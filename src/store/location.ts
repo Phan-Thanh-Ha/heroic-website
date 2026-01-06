@@ -1,6 +1,6 @@
 import { locationApi } from "@/api/location.api";
-import type { IDistrict } from "@/types/district";
-import type { IWard } from "@/types/wards";
+import type { IDistrict } from "@/types/district.type";
+import type { IWard } from "@/types/wards.type";
 import { makeAutoObservable, runInAction } from "mobx";
 
 class LocationStore {

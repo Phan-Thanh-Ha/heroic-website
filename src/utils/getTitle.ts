@@ -1,0 +1,3 @@
+export const getTitle = (title: string) => {
+    return title + " - " + import.meta.env.VITE_APP_NAME;
+};
