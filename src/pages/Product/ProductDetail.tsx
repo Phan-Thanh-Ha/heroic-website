@@ -1,9 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { Button } from "@/components/ui/button";
+import { RainbowButton } from "@/components/ui/rainbow-button";
+import { SparklesText } from "@/components/ui/sparkles-text";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { productStore } from "@/store";
-import { Loader2, Minus, Plus } from "lucide-react";
+import { Loader2, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
+import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -12,7 +14,7 @@ const ProductDetailPage = observer(() => {
     const { slug } = useParams<{ slug: string }>();
     const { currentProduct, isLoading } = productStore;
 
-    // State cho biến thể được chọn (mặc định lấy phần tử đầu tiên của productDetails)
+    // State  (mặc định lấy phần tử đầu tiên của productDetails)
     const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [mainImage, setMainImage] = useState("");
@@ -31,10 +33,15 @@ const ProductDetailPage = observer(() => {
             }
         }
     }, [currentProduct]);
-    // Tính toán biến thể hiện tại
+
     const currentVariant = useMemo(() => {
         return currentProduct?.productDetails?.[selectedVariantIndex] || null;
     }, [currentProduct, selectedVariantIndex]);
+
+    // thêm sản phẩm vào giỏ hàng
+    const handleAddToCart = () => {
+        console.log("Thêm vào giỏ hàng:", toJS(currentProduct));
+    }
 
     if (isLoading) {
         return (
@@ -81,7 +88,7 @@ const ProductDetailPage = observer(() => {
                         <div>
                             <p className="text-red-600 font-bold uppercase text-xs tracking-[0.2em] mb-2">Mã SP: {currentProduct.code}</p>
                             <h1 className="text-4xl font-black text-zinc-900 leading-[1.1] uppercase italic tracking-tighter mb-4">
-                                {currentProduct.name}
+                                <SparklesText>{currentProduct.name}</SparklesText>
                             </h1>
                             <div className="flex items-center gap-4 text-sm font-bold text-zinc-500">
                                 <span className="bg-zinc-100 px-3 py-1 rounded-md">SIZE: {currentVariant?.size}</span>
@@ -104,7 +111,6 @@ const ProductDetailPage = observer(() => {
                             </div>
                         </div>
 
-                        {/* CHỌN BIẾN THỂ (Nếu có nhiều Flavor/Size) */}
                         <div className="space-y-4">
                             <p className="font-black text-sm uppercase tracking-wider">Chọn phiên bản:</p>
                             <div className="flex flex-wrap gap-3">
@@ -131,11 +137,34 @@ const ProductDetailPage = observer(() => {
                                 <span className="w-10 text-center font-bold">{quantity}</span>
                                 <button onClick={() => setQuantity(quantity + 1)} className="p-4 hover:text-red-600"><Plus size={18} /></button>
                             </div>
-                         
+
                         </div>
-                           <Button className="flex-1 h-16 text-md font-black bg-zinc-950 hover:bg-zinc-800 rounded-2xl uppercase tracking-widest text-white">
-                                Thêm vào giỏ hàng
-                            </Button>
+                        <div className="grid grid-cols-1 grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1 md:gap-4 lg:grid-cols-3 lg:grid-rows-1 lg:gap-4">
+                            <div className="col-start-1 col-span-1 row-start-1 row-span-1 md:col-start-1 md:col-span-2 md:row-start-1 md:row-span-1 lg:col-start-1 lg:col-span-2 lg:row-start-1 lg:row-span-1 text-white flex items-center justify-content font-semibold rounded">
+                                <RainbowButton
+                                    variant="outline"
+                                    className="w-full"
+                                    size="lg"
+                                    onClick={() => {
+                                        handleAddToCart()
+                                    }}
+                                    >
+                                    <ShoppingCart size={20} className="animate-bounce" />
+                                    <span>Thêm vào giỏ hàng</span>
+                                </RainbowButton>
+                            </div>
+                            <div className="col-start-1 col-span-1 row-start-2 row-span-1 md:col-start-3 md:col-span-1 md:row-start-1 md:row-span-1 lg:col-start-3 lg:col-span-1 lg:row-start-1 lg:row-span-1  text-white flex items-center justify-content font-semibold rounded">
+                                <RainbowButton
+                                className="w-full"
+                                    variant="outline"
+                                    size="lg"
+                                >
+                                    <Zap size={20} className="animate-bounce" />
+                                    <span>Mua ngay</span>
+                                </RainbowButton>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
 
