@@ -1,4 +1,5 @@
-import request, { type ApiResponse } from "@/api/apiClient";
+import request from "@/api/apiClient";
+import type { ApiResponse } from "@/types";
 
 export const uploadApi = {
   uploadAvatar: (formData: FormData): Promise<ApiResponse<any>> => {

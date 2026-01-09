@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 
 const Home: React.FC =  observer(() => {
-    const { categories, isLoading } = categoryStore;
+    const { categories } = categoryStore;
     useEffect(() => {
         categoryStore.getCategoryList();
     }, []);

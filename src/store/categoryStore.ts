@@ -14,9 +14,9 @@ class CategoryStore {
     async getCategoryList() {
         try {
             this.setLoading(true);
-            
+
             const response = await categoryApi.getCategoryList();
-            
+
             runInAction(() => {
                 if (response.success) {
                     this.categories = response.data.items || [];
@@ -32,7 +32,7 @@ class CategoryStore {
     }
 
     // Set loading
-    setLoading(value: boolean) { 
+    setLoading(value: boolean) {
         this.isLoading = value;
     }
 }

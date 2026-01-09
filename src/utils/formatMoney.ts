@@ -21,10 +21,10 @@ export const formatCurrency = (
     }).format(numericAmount);
 };
 
-export const formatterVND = (value: any) => {
+export const formatterVND = (value: number) => {
     return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
-export const parserVND = (value: any) => {
+export const parserVND = (value: string) => {
     return value.replace(/\$\s?|(\.*)/g, '');
 };

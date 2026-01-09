@@ -29,7 +29,7 @@ interface LoginFormProps {
   onSelectMethod: (method: 'telegram' | 'discord' | 'email') => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = observer(({ onEmailChange, onSelectMethod, onSuccess }) => {
+const LoginForm: React.FC<LoginFormProps> = observer(({ onEmailChange, onSelectMethod }) => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "", otpMethod: "email" },
