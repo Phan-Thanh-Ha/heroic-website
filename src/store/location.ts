@@ -50,7 +50,6 @@ class LocationStore {
 
     // Lấy danh sách wards theo district code
     async getWardsByDistrictCode(districtCode: string) {
-        console.log('districtCode', districtCode)
         runInAction(() => {
             this.setResetWards(true);
             this.wards = [];

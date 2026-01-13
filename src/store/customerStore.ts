@@ -36,7 +36,6 @@ class CustomerStore {
     }
 
     setAuth(data: { customer: ICustomer; token: string }) {
-        console.log('setAuth', data);
         this.customers = data.customer;
         this.accessToken = data.token;
         this.loginProvider = data.customer.typeLogin?.toUpperCase() ?? null;

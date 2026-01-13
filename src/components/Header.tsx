@@ -1,30 +1,37 @@
 import logoImage from "@/assets/icon-512.svg";
+import LanguageSelector from "@/components/LanguageSelector";
 import { Button } from "@/components/ui/button";
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Đảm bảo đúng path
 import { useTheme } from "@/hooks/useTheme";
-import { Menu, Moon, Search, Sun, Bell, ShoppingCart, User } from "lucide-react";
+import { cartStore } from "@/store";
+import { customerStore } from "@/store/customerStore";
+import { Menu, Moon, Search, ShoppingCart, Sun, User } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { motion } from "motion/react";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { observer } from "mobx-react-lite";
-import { customerStore } from "@/store/customerStore";
-import LanguageSelector from "@/components/LanguageSelector";
+import { HeroHighlight, Highlight } from "./ui/hero-highlight";
+import { SparklesText } from "./ui/sparkles-text";
+import { formatCurrency } from "@/utils/formatMoney";
 
 const Header: React.FC = observer(() => {
     const location = useLocation();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // State quản lý đóng mở menu mobile
     const { theme, toggleTheme } = useTheme();
     const isAuthenticated = customerStore.isAuthenticated;
     const customer = customerStore.customers;
@@ -39,32 +46,58 @@ const Header: React.FC = observer(() => {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
-            // Navigate to search page or perform search
             window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
         }
     };
 
-    const handleLogout = () => {
-        customerStore.logout();
-    };
-
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-gray-950/80 backdrop-blur-md supports-backdrop-filter:bg-white/60 dark:supports-backdrop-filter:bg-gray-950/60 shadow-sm">
+        <header className="sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-gray-950/80 backdrop-blur-md shadow-sm">
             <div className="container mx-auto px-4 lg:px-6">
                 <div className="flex h-16 md:h-20 items-center justify-between gap-4">
-                    {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-2 shrink-0 hover:opacity-80 transition-opacity">
-                        <img
-                            src={logoImage}
-                            alt="Heroic Logo"
-                            className="h-10 w-10 md:h-12 md:w-12"
-                        />
-                        <span className="hidden sm:block text-xl md:text-2xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            Heroic
-                        </span>
-                    </Link>
 
-                    {/* Desktop Navigation */}
+                    {/* LEFT: Mobile Menu & Logo */}
+                    <div className="flex items-center gap-2">
+                        {/* Mobile Menu trượt ra */}
+                        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+                            <SheetTrigger asChild>
+                                <Button variant="ghost" size="icon" className="lg:hidden">
+                                    <Menu className="h-6 w-6" />
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[300px]">
+                                <div className="flex flex-col gap-4 mt-8">
+                                    <p className="text-sm font-semibold text-gray-400 px-4">DANH MỤC</p>
+                                    {navItems.map((item) => (
+                                        <Link
+                                            to={item.link}
+                                            className={`px-3 py-2 text-sm font-medium transition-all duration-200 rounded-lg whitespace-nowrap ${ // Thêm whitespace-nowrap
+                                                location.pathname === item.link
+                                                    ? "text-primary bg-primary/10"
+                                                    : "text-gray-700 dark:text-gray-300"
+                                                }`}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    ))}
+                                    <hr className="my-2" />
+                                    {/* Link bổ sung cho mobile nếu muốn */}
+                                    <Link to="/cart" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 flex items-center gap-2">
+                                        <ShoppingCart className="h-5 w-5" /> Giỏ hàng
+                                    </Link>
+                                </div>
+                            </SheetContent>
+                        </Sheet>
+
+                        {/* Logo */}
+                        <Link to="/" className="flex items-center space-x-2 shrink-0">
+                            <img src={logoImage} alt="Logo" className="h-8 w-8 md:h-10 md:w-10" />
+                            <SparklesText sparklesCount={5} className="text-xl font-bold hidden sm:block">
+                                Heroic
+                            </SparklesText>
+                        </Link>
+                    </div>
+
+                    {/* CENTER: Desktop Navigation */}
                     <nav className="hidden lg:flex items-center flex-1 justify-center">
                         <NavigationMenu>
                             <NavigationMenuList className="gap-1">
@@ -73,11 +106,11 @@ const Header: React.FC = observer(() => {
                                         <NavigationMenuLink asChild>
                                             <Link
                                                 to={item.link}
-                                                className={`px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg ${
+                                                className={`px-3 py-2 text-sm font-medium transition-all duration-200 rounded-lg whitespace-nowrap ${ // Thêm whitespace-nowrap ở đây
                                                     location.pathname === item.link
-                                                        ? "text-primary bg-primary/10 shadow-sm"
-                                                        : "text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800"
-                                                }`}
+                                                        ? "text-primary bg-primary/10"
+                                                        : "text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-100"
+                                                    }`}
                                             >
                                                 {item.name}
                                             </Link>
@@ -88,117 +121,82 @@ const Header: React.FC = observer(() => {
                         </NavigationMenu>
                     </nav>
 
-                    {/* Search Bar */}
-                    <div className="hidden md:flex flex-1 max-w-lg mx-4 lg:mx-6">
+                    {/* CENTER-RIGHT: Search Bar (ẩn trên mobile rất nhỏ) */}
+                    <div className="hidden md:flex flex-1 max-w-xs lg:max-w-lg mx-2">
                         <PlaceholdersAndVanishInput
-                            placeholders={[
-                                "Tìm kiếm sản phẩm...",
-                                "Whey Protein",
-                                "BCAA & EAA",
-                                "Mass Gainer",
-                                "Vitamin & Dầu cá",
-                                "Thực phẩm chức năng",
-                            ]}
+                            placeholders={["Tìm kiếm sản phẩm...", "Whey Protein", "Mass Gainer"]}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onSubmit={handleSearch}
                         />
                     </div>
 
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-2 shrink-0">
-                        {/* Search Icon for Mobile */}
+                    {/* RIGHT: Actions */}
+                    <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+                        {/* Search Icon Mobile */}
                         <Button variant="ghost" size="icon" className="md:hidden">
                             <Search className="h-5 w-5" />
                         </Button>
 
                         {isAuthenticated ? (
                             <>
-                                {/* Language Selector */}
-                                <LanguageSelector />
+                                <div className="hidden sm:block"><LanguageSelector /></div>
 
-
-                                {/* User Avatar & Name */}
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="hidden sm:flex items-center gap-2 px-2">
-                                            <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <Button variant="ghost" className="flex items-center gap-2 px-1 sm:px-2">
+                                            <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
                                                 {customer?.avatarUrl ? (
-                                                    <img src={customer.avatarUrl} alt={customer.fullName} className="w-full h-full object-cover" />
+                                                    <img src={customer.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <User className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                                                    <User className="h-4 w-4 m-2" />
                                                 )}
                                             </div>
-                                            <div className="hidden md:block text-left">
-                                                <div className="text-xs text-gray-600 dark:text-gray-400">Xin chào</div>
-                                                <div className="text-sm font-medium text-foreground">{customer?.fullName || customer?.firstName || "User"}</div>
+                                            <div className="hidden lg:block text-left">
+                                                <div className="text-sm font-medium leading-none">{customer?.fullName}</div>
                                             </div>
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
-                                        <DropdownMenuItem asChild>
-                                            <Link to="/profile">Tài khoản</Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem asChild>
-                                            <Link to="/orders">Đơn hàng</Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={handleLogout}>Đăng xuất</DropdownMenuItem>
+                                        <DropdownMenuItem asChild><Link to="/profile">Tài khoản</Link></DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => customerStore.logout()}>Đăng xuất</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
 
-                                {/* Shopping Cart */}
-                                <Button variant="ghost" className="hidden sm:flex items-center gap-2 px-2" asChild>
+                                <Button variant="ghost" size="icon" className="relative" asChild>
                                     <Link to="/cart">
                                         <ShoppingCart className="h-5 w-5" />
-                                        <div className="hidden md:block text-left">
-                                            <div className="text-xs text-gray-600 dark:text-gray-400">Thành tiền</div>
-                                            <div className="text-sm font-medium text-red-600">0đ</div>
-                                        </div>
+                                        {cartStore.getCartItems().length > 0 && <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] text-white">
+                                            {cartStore.getCartItems().length}
+                                        </span>
+                                        }
                                     </Link>
+                                    {/* Tổng tiền */}
+
                                 </Button>
 
-                                {/* Notifications */}
-                                <Button variant="ghost" size="icon" className="hidden sm:flex relative">
-                                    <Bell className="h-5 w-5" />
-                                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full"></span>
-                                </Button>
+                                {/* Highlight tổng tiền */}
+                                {cartStore.getTotalPrice() > 0 && <Highlight className="text-black dark:text-white">
+                                        <span className="text-sm font-medium">
+                                            {formatCurrency(cartStore.getTotalPrice(), 'VND', 'vi-VN')}
+                                        </span>
+                                    </Highlight>
+                                }
+
                             </>
                         ) : (
-                            <>
-                                {/* Đăng nhập Button */}
-                                <Button
-                                    onClick={() => navigate("/login")}
-                                    className="relative inline-flex h-10 overflow-hidden rounded-full p-px focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-                                >
-                                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-                                    <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-                                        Đăng nhập
-                                    </span>
-                                </Button>
-                            </>
+                            <Button
+                                onClick={() => navigate("/login")}
+                                className="relative inline-flex h-9 overflow-hidden rounded-full p-px"
+                            >
+                                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                                <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 text-xs sm:text-sm font-medium text-white backdrop-blur-3xl">
+                                    Đăng nhập
+                                </span>
+                            </Button>
                         )}
-                        
-                        {/* Theme Toggle */}
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={toggleTheme}
-                            className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                            aria-label="Toggle theme"
-                        >
-                            {theme === "light" ? (
-                                <Moon className="h-5 w-5" />
-                            ) : (
-                                <Sun className="h-5 w-5" />
-                            )}
-                        </Button>
 
-                        {/* Mobile Menu Button */}
-                        <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="lg:hidden hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        >
-                            <Menu className="h-5 w-5" />
+                        <Button variant="ghost" size="icon" onClick={toggleTheme}>
+                            {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
                         </Button>
                     </div>
                 </div>

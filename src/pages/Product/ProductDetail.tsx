@@ -3,9 +3,9 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import { SparklesText } from "@/components/ui/sparkles-text";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { productStore } from "@/store";
+import { cartStore, productStore } from "@/store";
+import type { IProduct } from "@/types";
 import { Loader2, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
-import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -35,13 +35,32 @@ const ProductDetailPage = observer(() => {
     }, [currentProduct]);
 
     const currentVariant = useMemo(() => {
-        return currentProduct?.productDetails?.[selectedVariantIndex] || null;
+        return(
+            currentProduct?.productDetails?.[selectedVariantIndex] || null
+        )
     }, [currentProduct, selectedVariantIndex]);
 
     // thêm sản phẩm vào giỏ hàng
     const handleAddToCart = () => {
-        console.log("Thêm vào giỏ hàng:", toJS(currentProduct));
+        const product = {
+            ...currentProduct,
+            productDetails: [
+                {
+                    ...currentVariant,
+                    quantity: quantity
+                }
+            ],
+            productImages: [
+                {
+                    ...currentProduct?.productImages?.[0],
+                    quantity: quantity
+                }
+            ]
+        }
+        cartStore.addToCart(product as IProduct); // thêm sản phẩm vào giỏ hàng
     }
+
+
 
     if (isLoading) {
         return (
@@ -141,18 +160,18 @@ const ProductDetailPage = observer(() => {
                         </div>
                         <div className="grid grid-cols-1 grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1 md:gap-4 lg:grid-cols-3 lg:grid-rows-1 lg:gap-4">
                             <div className="col-start-1 col-span-1 row-start-1 row-span-1 md:col-start-1 md:col-span-2 md:row-start-1 md:row-span-1 lg:col-start-1 lg:col-span-2 lg:row-start-1 lg:row-span-1 text-white flex items-center justify-content font-semibold rounded">
-                                <RainbowButton
-                                    variant="outline"
-                                    className="w-full"
-                                    size="lg"
-                                    onClick={() => {
-                                        handleAddToCart()
-                                    }}
-                                    >
-                                    <ShoppingCart size={20} className="animate-bounce" />
-                                    <span>Thêm vào giỏ hàng</span>
-                                </RainbowButton>
-                            </div>
+                                    <RainbowButton
+                                        variant="default"
+                                        className="w-full"
+                                        size="lg"
+                                        onClick={() => {
+                                            handleAddToCart()
+                                        }}
+                                        >
+                                        <ShoppingCart size={20} className="animate-bounce" />
+                                        <span>Thêm vào giỏ hàng</span>
+                                    </RainbowButton>
+                                                            </div>
                             <div className="col-start-1 col-span-1 row-start-2 row-span-1 md:col-start-3 md:col-span-1 md:row-start-1 md:row-span-1 lg:col-start-3 lg:col-span-1 lg:row-start-1 lg:row-span-1  text-white flex items-center justify-content font-semibold rounded">
                                 <RainbowButton
                                 className="w-full"

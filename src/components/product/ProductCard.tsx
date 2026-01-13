@@ -20,7 +20,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     const isOutOfStock = product.totalStock <= 0;
 
     return (
-        <Link 
+        <Link
             to={`/products/${product.slug}`}
             className="group relative block overflow-hidden rounded-2xl h-full transition-all border border-zinc-200 hover:shadow-xl hover:-translate-y-1 bg-white"
         >
@@ -55,7 +55,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     <h2 className="text-zinc-700 text-sm font-medium leading-snug line-clamp-2 mb-2 h-10 group-hover:text-red-600 transition-colors">
                         {product.name}
                     </h2>
-                    
+
                     <div className="mt-auto">
                         <div className="flex flex-col">
                             <span className="text-zinc-400 text-[10px] mb-0.5">Giá chỉ từ:</span>
@@ -65,7 +65,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                                 </span>
                             </div>
                         </div>
-                        
+
                         {/* Rating & Footer */}
                         <div className="flex items-center justify-between mt-3 pt-3 border-t border-dashed border-zinc-100">
                             <div className="flex text-orange-400">

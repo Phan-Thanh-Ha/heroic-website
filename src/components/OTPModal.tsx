@@ -77,7 +77,6 @@ const OTPModal: React.FC<OTPModalProps> = ({
                 customerStore.setAuth({
                     customer: response.data.info || response.data.customer,
                     token: response.data.accessToken || response.data.token,
-                    
                 });
                 toast.success(response.message);
                 // chuyển đến trang home
@@ -89,7 +88,6 @@ const OTPModal: React.FC<OTPModalProps> = ({
                 toast.error(response?.message );
             }
         } catch (error: any) {
-            console.log(error);
             setOtp("");
         } finally {
             setIsLoading(false);

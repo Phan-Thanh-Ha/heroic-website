@@ -102,7 +102,6 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
         districtId: data.districtId,
         wardId: data.wardId,
       };
-      console.log(payload);
       const response = await authApi.register(payload);
       if (response.success && response.data) {
         toast.success("Đăng ký thành công!");
