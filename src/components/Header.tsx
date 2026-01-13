@@ -18,14 +18,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Đ
 import { useTheme } from "@/hooks/useTheme";
 import { cartStore } from "@/store";
 import { customerStore } from "@/store/customerStore";
+import { formatCurrency } from "@/utils/formatMoney";
 import { Menu, Moon, Search, ShoppingCart, Sun, User } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import { motion } from "motion/react";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HeroHighlight, Highlight } from "./ui/hero-highlight";
+import { Highlight } from "./ui/hero-highlight";
 import { SparklesText } from "./ui/sparkles-text";
-import { formatCurrency } from "@/utils/formatMoney";
 
 const Header: React.FC = observer(() => {
     const location = useLocation();

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Input, type InputProps } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff } from "lucide-react";
+import React, { useState } from "react";
 
-interface PasswordInputProps extends Omit<InputProps, "type"> {
+interface PasswordInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   status?: "success" | "error" | "default"
 }
 
@@ -22,7 +22,6 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
             // Thêm padding right cho eye icon (status icon đã ở right-3, eye icon sẽ ở right-0)
             hasStatus ? "pr-10" : "pr-10"
           )}
-          status={status}
           ref={ref}
           {...props}
         />

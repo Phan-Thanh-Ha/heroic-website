@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { RouterProvider } from 'react-router-dom'
-import { toast } from 'sonner'
 import { router } from '@/routes';
+import { RouterProvider } from 'react-router-dom';
 
 function App() {
 

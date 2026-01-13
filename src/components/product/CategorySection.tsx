@@ -38,7 +38,10 @@ export const CategorySection: React.FC<ICategorySectionProps> = ({ category, pro
             {/* Danh sách 5 sản phẩm */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {products.slice(0, 5).map((product: IProduct) => (
-                    <ProductCard key={product.id} product={product} />
+                    <ProductCard key={product.id} product={{
+                        ...product,
+                        minPrice: product.productDetails[0].retailPrice,
+                        totalStock: product.productDetails[0].quantity }} />
                 ))}
             </div>
         </section>
