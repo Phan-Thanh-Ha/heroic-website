@@ -72,7 +72,7 @@ const LoginForm: React.FC<LoginFormProps> = observer(({ onEmailChange, onSelectM
               <FormItem>
                 <FormLabel className="text-slate-400 text-xs font-bold uppercase tracking-wider">Mật khẩu</FormLabel>
                 <FormControl>
-                  <Input type="password" style={{ WebkitTextSecurity: 'disc' }} className="bg-[#1a1f2e] border-[#2e3344] text-white h-11 rounded-xl" placeholder="••••••••" {...field} />
+                  <Input type="password" className="bg-[#1a1f2e] border-[#2e3344] text-white h-11 rounded-xl" placeholder="••••••••" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
