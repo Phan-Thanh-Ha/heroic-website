@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit false || vite build",
-    "start": "vite preview",
+    "start": "vite preview --host 0.0.0.0 --port $PORT",
+    "preview": "vite preview --host 0.0.0.0 --port $PORT",
     "lint": "eslint .",
-    "preview": "vite preview --host 0.0.0.0",
     "clear-cache": "rm -rf node_modules && rm -rf package-lock.json && yarn install && rm -rf node_modules/.vite"
   },
   "dependencies": {

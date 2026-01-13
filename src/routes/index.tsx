@@ -6,6 +6,7 @@ import Profile from "@/pages/Profile";
 import LoginPage from "@/pages/Login/LoginPage";
 import RegisterPage from "@/pages/Register/RegisterPage";
 import ProductDetailPage from "@/pages/Product/ProductDetail";
+import CartPage from "@/pages/Cart/CartPage";
 
 const routes: RouteObject[] = [
     {
@@ -20,7 +21,10 @@ const routes: RouteObject[] = [
                 path: "/products/:slug",
                 element: <ProductDetailPage />,
             },
-            
+            {
+                path: "/cart",
+                element: <CartPage />,
+            },
         ],
     },
     {
@@ -31,7 +35,7 @@ const routes: RouteObject[] = [
         path: "/register",
         element: <RegisterPage />,
     },
-    
+
     {
         path: "/profile",
         element: <Profile />,
