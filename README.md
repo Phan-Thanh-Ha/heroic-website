@@ -53,7 +53,3 @@ VITE_ACCOUNT_NUMBER_BANK=0000000000
 - `preview` - preview production build
 - `lint` - run ESLint
 
-## Security Notes
-
-- Do not commit real API keys, tokens, or customer data.
-- Keep `.env` local; only publish `env.example` with placeholders.
