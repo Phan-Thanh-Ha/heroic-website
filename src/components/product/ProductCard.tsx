@@ -1,88 +1,90 @@
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
+import type { IProduct } from "@/types";
 import { Star, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// Định nghĩa lại Interface cho khớp với dữ liệu Repository trả về
 interface ProductCardProps {
-    product: {
-        id: number;
-        name: string;
-        slug: string;
-        image: string;      // Ảnh lấy từ tấm đầu tiên
-        minPrice: number;   // Giá thấp nhất tính từ các biến thể
-        totalStock: number; // Tổng kho của các biến thể
-        discount?: number;  // % giảm giá (nếu có)
-    };
+    product: IProduct;
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-    const isOutOfStock = product.totalStock <= 0;
+    // Lấy thông tin detail đầu tiên để hiển thị (tránh lỗi nếu mảng trống)
+    const detail = product.productDetails?.[0];
+    const retailPrice = detail?.retailPrice ?? 0;
+    const discount = detail?.discount ?? 0;
+    const isOutOfStock = detail?.isOutOfStock ?? false;
 
     return (
         <Link
             to={`/products/${product.slug}`}
-            className="group relative block overflow-hidden rounded-2xl h-full transition-all border border-zinc-200 hover:shadow-xl hover:-translate-y-1 bg-white"
+            className="group relative flex flex-col h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-all hover:-translate-y-1 hover:shadow-xl"
         >
-            <div className="relative z-20 p-4 h-full flex flex-col">
-                {/* Badge Flash Sale */}
-                <div className="absolute top-4 left-4 z-30">
-                    {product.discount && product.discount > 0 && (
-                        <div className="bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1 italic shadow-sm">
-                            <Zap size={10} fill="currentColor" /> SALE -{product.discount}%
+            {/* 1. Phần Ảnh sản phẩm - Cố định tỉ lệ vuông */}
+            <div className="relative aspect-square w-full overflow-hidden bg-white p-4 flex items-center justify-center">
+                {/* Badge Khuyến mãi */}
+                {discount > 0 && (
+                    <div className="absolute top-3 left-3 z-30">
+                        <div className="flex items-center gap-1 rounded-full bg-red-600 px-2 py-1 italic text-[10px] font-bold text-white shadow-sm">
+                            <Zap size={10} fill="currentColor" /> SALE -{discount}%
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
 
                 {/* Badge Trạng thái kho */}
-                <div className="absolute top-2 right-2 z-30 flex flex-col gap-1 items-end">
-                    {isOutOfStock && (
-                        <Badge variant="secondary" className="bg-zinc-100 text-zinc-500 border-none text-[10px]">Tạm hết hàng</Badge>
-                    )}
-                </div>
+                {isOutOfStock && (
+                    <div className="absolute top-3 right-3 z-30">
+                        <Badge variant="secondary" className="border-none bg-zinc-100 text-[10px] text-zinc-500">
+                            Tạm hết hàng
+                        </Badge>
+                    </div>
+                )}
 
-                {/* Ảnh Sản phẩm */}
-                <div className="aspect-square mb-4 flex items-center justify-center p-2 relative">
-                    <img
-                        src={product.image || '/placeholder-product.png'} // Fallback nếu không có ảnh
-                        alt={product.name}
-                        className={`object-contain h-full w-full transition-transform duration-500 group-hover:scale-110 ${isOutOfStock ? 'grayscale opacity-60' : ''}`}
-                    />
-                </div>
+                <img
+                    src={product.image || '/placeholder-product.png'}
+                    alt={product.name}
+                    className={`h-full w-full object-contain transition-transform duration-500 group-hover:scale-110 ${
+                        isOutOfStock ? 'grayscale opacity-60' : ''
+                    }`}
+                />
+            </div>
 
-                {/* Thông tin sản phẩm */}
-                <div className="flex flex-col flex-grow text-left">
-                    <h2 className="text-zinc-700 text-sm font-medium leading-snug line-clamp-2 mb-2 h-10 group-hover:text-red-600 transition-colors">
+            <div className="flex grow flex-col p-4 pt-0">
+                <div className="mb-2 min-h-[40px]">
+                    <h2 className="line-clamp-2 text-sm font-medium leading-snug text-zinc-700 transition-colors group-hover:text-red-600">
                         {product.name}
                     </h2>
+                </div>
 
-                    <div className="mt-auto">
-                        <div className="flex flex-col">
-                            <span className="text-zinc-400 text-[10px] mb-0.5">Giá chỉ từ:</span>
-                            <div className="flex items-center gap-2">
-                                <span className="text-red-600 font-bold text-lg">
-                                    {product.minPrice > 0 ? product.minPrice.toLocaleString() : "Liên hệ"}đ
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Rating & Footer */}
-                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-dashed border-zinc-100">
-                            <div className="flex text-orange-400">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} size={10} fill={i < 5 ? "currentColor" : "none"} />
-                                ))}
-                            </div>
-                            <span className="text-[10px] text-zinc-400">Đã bán {Math.floor(Math.random() * 100)}+</span>
-                        </div>
+                <div className="flex grow flex-col justify-end">
+                    <span className="text-[10px] text-zinc-400">Giá chỉ từ:</span>
+                    <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-red-600">
+                            {retailPrice > 0 ? retailPrice.toLocaleString() : "Liên hệ"}đ
+                        </span>
                     </div>
                 </div>
 
-                {/* Hiệu ứng viền chạy nếu đang có khuyến mãi lớn */}
-                {product.discount && product.discount >= 10 && (
-                    <BorderBeam size={200} duration={3} colorFrom="#ef4444" colorTo="#fbbf24" />
-                )}
+                {/* 3. Footer (Rating & Đã bán) - Luôn nằm sát đáy và thẳng hàng ngang */}
+                <div className="mt-4 flex items-center justify-between border-t border-dashed border-zinc-100 pt-3">
+                    <div className="flex text-orange-400">
+                        {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={10} fill="currentColor" />
+                        ))}
+                    </div>
+                    <span className="text-[10px] text-zinc-400">
+                        Đã bán {Math.floor(Math.random() * 50) + 50}+
+                    </span>
+                </div>
             </div>
+
+            {/* Hiệu ứng BorderBeam khi giảm giá mạnh */}
+            {discount >= 10 && (
+                <BorderBeam size={200} duration={3} colorFrom="#ef4444" colorTo="#fbbf24" />
+            )}
+
+            {/* Vạch kẻ trang trí ở đáy - Thẳng hàng tuyệt đối */}
+            <div className="absolute bottom-0 left-0 h-1 w-full translate-y-1 bg-red-600 transition-transform duration-300 group-hover:translate-y-0" />
         </Link>
     );
 }

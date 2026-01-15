@@ -61,7 +61,7 @@ const categories: Category[] = [
     },
 ];
 
-const CategoryBanner: React.FC = () => {
+const CategoryIcon: React.FC = () => {
     return (
         <div className="w-full container mx-auto px-4 py-8">
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-foreground">
@@ -107,5 +107,4 @@ const CategoryBanner: React.FC = () => {
     );
 };
 
-export default CategoryBanner;
-
+export default CategoryIcon;

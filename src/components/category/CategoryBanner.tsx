@@ -1,14 +1,12 @@
 import { ArrowRight } from "lucide-react";
-import { ProductCard } from "./ProductCard";
-import type { ICategory, IProduct } from "@/types";
+import type { ICategory, } from "@/types";
 import { useNavigate } from "react-router-dom";
 
-export interface ICategorySectionProps {
+export interface ICategoryBannerProps {
     category: ICategory;
-    products: IProduct[];
 }
 
-export const CategorySection: React.FC<ICategorySectionProps> = ({ category, products }) => {
+export const CategoryBanner: React.FC<ICategoryBannerProps> = ({ category }) => {
     const navigate = useNavigate();
 
     // Chuyển đến trang danh mục
@@ -17,7 +15,7 @@ export const CategorySection: React.FC<ICategorySectionProps> = ({ category, pro
     }
 
     return (
-        <section className="w-full max-w-7xl mx-auto py-8 px-4">
+        <>
             {/* Tiêu đề danh mục */}
             <div className="flex justify-between items-baseline mb-4 flex-col md:flex-row">
                 <div className="flex items-center gap-2">
@@ -34,13 +32,6 @@ export const CategorySection: React.FC<ICategorySectionProps> = ({ category, pro
             <div className="w-full mb-6 rounded-xl overflow-hidden shadow-md">
                 <img src={category.banner} alt={category.name} className="w-full h-auto object-cover hover:scale-[1.01] transition-transform duration-500" />
             </div>
-
-            {/* Danh sách 5 sản phẩm */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {products.slice(0, 5).map((product: IProduct) => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
-            </div>
-        </section>
+        </>
     );
 }

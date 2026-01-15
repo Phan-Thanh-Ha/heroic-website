@@ -2,15 +2,27 @@ export interface ICustomer {
     id: number
     uuid: string
     customerCode: string
+    firstName: string
+    lastName: string
     fullName: string
-    avatarUrl: string
+    avatarUrl: any
     email: string
-    phoneNumber: string
-    dateOfBirth: string
-    loyaltyPoints: number
-    customerGroupId: number
-    createdAt: string
     address: string
-    gender: string
-    typeLogin: string
+    gender: any
+    typeRegister: string
+    phoneNumber: string
+    dateOfBirth: any
+    loyaltyPoints: number
+    customerGroupId: any
+    googleId: any
+    facebookId: any
+    provinceId: number
+    districtId: number
+    wardId: number
+    otpCode: string
+    otpExpiredAt: any
+    fullAddress: string
+    discordId: any
+    telegramId: any
+    createdAt: number
 }

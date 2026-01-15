@@ -31,6 +31,7 @@ export interface ProductDetail {
     isActive: boolean
     isFlashSale: boolean
     isOutOfStock: boolean
+    discountedPrice: number
 }
 
 export interface ProductImage {

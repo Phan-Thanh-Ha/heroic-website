@@ -7,6 +7,7 @@ import LoginPage from "@/pages/Login/LoginPage";
 import RegisterPage from "@/pages/Register/RegisterPage";
 import ProductDetailPage from "@/pages/Product/ProductDetail";
 import CartPage from "@/pages/Cart/CartPage";
+import CategoryPage from "@/pages/Category/CategoryPage";
 
 const routes: RouteObject[] = [
     {
@@ -24,6 +25,10 @@ const routes: RouteObject[] = [
             {
                 path: "/cart",
                 element: <CartPage />,
+            },
+            {
+                path: "/products",
+                element: <CategoryPage />,
             },
         ],
     },

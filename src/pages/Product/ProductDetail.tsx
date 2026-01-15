@@ -1,3 +1,4 @@
+import NavigationHeader from "@/components/NavigationHeader";
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { RainbowButton } from "@/components/ui/rainbow-button";
@@ -8,11 +9,12 @@ import type { IProduct } from "@/types";
 import { Loader2, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProductDetailPage = observer(() => {
     const { slug } = useParams<{ slug: string }>();
     const { currentProduct, isLoading } = productStore;
+    const navigate = useNavigate();
 
     // State  (mặc định lấy phần tử đầu tiên của productDetails)
     const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -35,13 +37,13 @@ const ProductDetailPage = observer(() => {
     }, [currentProduct]);
 
     const currentVariant = useMemo(() => {
-        return(
+        return (
             currentProduct?.productDetails?.[selectedVariantIndex] || null
         )
     }, [currentProduct, selectedVariantIndex]);
 
     // thêm sản phẩm vào giỏ hàng
-    const handleAddToCart = () => {
+    const handleAddToCart = (type: 'cart' | 'buy-now' = 'cart') => {
         const product = {
             ...currentProduct,
             productDetails: [
@@ -58,6 +60,9 @@ const ProductDetailPage = observer(() => {
             ]
         }
         cartStore.addToCart(product as IProduct); // thêm sản phẩm vào giỏ hàng
+        if (type === 'buy-now') {
+            navigate('/cart')
+        }
     }
 
 
@@ -76,6 +81,8 @@ const ProductDetailPage = observer(() => {
     return (
         <div className="bg-white min-h-screen text-zinc-900">
             <div className="max-w-7xl mx-auto px-4 py-10">
+                <NavigationHeader title={currentProduct.name} />
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
                     {/* --- CỘT TRÁI: HÌNH ẢNH --- */}
@@ -160,21 +167,24 @@ const ProductDetailPage = observer(() => {
                         </div>
                         <div className="grid grid-cols-1 grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1 md:gap-4 lg:grid-cols-3 lg:grid-rows-1 lg:gap-4">
                             <div className="col-start-1 col-span-1 row-start-1 row-span-1 md:col-start-1 md:col-span-2 md:row-start-1 md:row-span-1 lg:col-start-1 lg:col-span-2 lg:row-start-1 lg:row-span-1 text-white flex items-center justify-content font-semibold rounded">
-                                    <RainbowButton
-                                        variant="default"
-                                        className="w-full"
-                                        size="lg"
-                                        onClick={() => {
-                                            handleAddToCart()
-                                        }}
-                                        >
-                                        <ShoppingCart size={20} className="animate-bounce" />
-                                        <span>Thêm vào giỏ hàng</span>
-                                    </RainbowButton>
-                                                            </div>
+                                <RainbowButton
+                                    variant="default"
+                                    className="w-full"
+                                    size="lg"
+                                    onClick={() => {
+                                        handleAddToCart('cart')
+                                    }}
+                                >
+                                    <ShoppingCart size={20} className="animate-bounce" />
+                                    <span>Thêm vào giỏ hàng</span>
+                                </RainbowButton>
+                            </div>
                             <div className="col-start-1 col-span-1 row-start-2 row-span-1 md:col-start-3 md:col-span-1 md:row-start-1 md:row-span-1 lg:col-start-3 lg:col-span-1 lg:row-start-1 lg:row-span-1  text-white flex items-center justify-content font-semibold rounded">
                                 <RainbowButton
-                                className="w-full"
+                                    onClick={() => {
+                                        handleAddToCart('buy-now')
+                                    }}
+                                    className="w-full"
                                     variant="outline"
                                     size="lg"
                                 >
@@ -203,21 +213,7 @@ const ProductDetailPage = observer(() => {
                             />
                         </TabsContent>
 
-                        <TabsContent value="nutrition" className="py-10">
-                            {/* Nutrition Table - Giữ nguyên style cũ của bạn */}
-                            <div className="border-[6px] border-black p-5 max-w-md bg-white font-sans text-black">
-                                <h2 className="text-5xl font-black border-b-[14px] border-black pb-1 uppercase tracking-tighter leading-none">Nutrition Facts</h2>
-                                <div className="border-b-[10px] border-black py-4 flex justify-between items-end font-black">
-                                    <span className="text-5xl tracking-tighter">Calories</span>
-                                    <span className="text-6xl tracking-tighter">120</span>
-                                </div>
-                                <div className="space-y-1 mt-4">
-                                    <div className="flex justify-between border-b border-zinc-300 py-1 font-black"><span>Protein</span><span>28g</span></div>
-                                    <div className="flex justify-between border-b border-zinc-300 py-1 font-black"><span>Total Fat</span><span>0g</span></div>
-                                    <div className="flex justify-between border-b border-zinc-300 py-1 font-black"><span>BCAA</span><span>6.1g</span></div>
-                                </div>
-                            </div>
-                        </TabsContent>
+
                     </Tabs>
                 </div>
             </div>

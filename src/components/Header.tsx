@@ -164,19 +164,20 @@ const Header: React.FC = observer(() => {
                                 <Button variant="ghost" size="icon" className="relative" asChild>
                                     <Link to="/cart">
                                         <ShoppingCart className="h-5 w-5" />
-                                        {cartStore.getCartItems().length > 0 && <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] text-white">
-                                            {cartStore.getCartItems().length}
-                                        </span>
-                                        }
+                                        {cartStore.cartItems.length > 0 && (
+                                            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] text-white">
+                                                {cartStore.cartItems.length}
+                                            </span>
+                                        )}
                                     </Link>
                                     {/* Tổng tiền */}
 
                                 </Button>
 
                                 {/* Highlight tổng tiền */}
-                                {cartStore.getTotalPrice() > 0 && <Highlight className="text-black dark:text-white">
+                                {cartStore.totalPrice > 0 && <Highlight className="text-black dark:text-white">
                                         <span className="text-sm font-medium">
-                                            {formatCurrency(cartStore.getTotalPrice(), 'VND', 'vi-VN')}
+                                            {formatCurrency(cartStore.totalPrice, 'VND', 'vi-VN')}
                                         </span>
                                     </Highlight>
                                 }

@@ -9,7 +9,7 @@ import banner5 from "@/assets/images/banner5.webp";
 const ProductBanner: React.FC = () => {
   // Hình ảnh cho carousel bên trái
   const carouselImages = [banner1, banner2, banner3];
-  
+
   // Hình ảnh cố định bên phải
   const fixedImages = [banner4, banner5];
 
@@ -83,4 +83,3 @@ const ProductBanner: React.FC = () => {
 };
 
 export default ProductBanner;
-
