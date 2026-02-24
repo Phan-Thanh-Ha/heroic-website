@@ -12,8 +12,8 @@ export interface IProduct {
     isDeleted: boolean
     createdAt: string
     createdById: number
-    updatedById: any
-    updatedAt: any
+    updatedById: number
+    updatedAt: string
     categoryId: number
     productDetails: ProductDetail[]
     productImages: ProductImage[]
@@ -38,4 +38,12 @@ export interface ProductImage {
     id: number
     productId: number
     image: string
+}
+
+export interface IProductQueryParams {
+    page?: number;
+    limit?: number;
+    name?: string;
+    category?: string;
+    [key: string]: any;
 }

@@ -158,7 +158,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                         <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                             <span className="text-sm text-muted-foreground">Chủ tài khoản:</span>
                             <div className="flex items-center gap-2">
-                                <span className="font-medium text-right max-w-[200px] truncate">
+                                <span className="font-medium text-right max-w-200px truncate">
                                     {accountName}
                                 </span>
                                 <Button

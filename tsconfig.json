@@ -13,7 +13,8 @@
       "@/views": ["./src/views"],
       "@/api": ["./src/api"],
       "@/types": ["./src/types"],
-      "@/utils": ["./src/utils"]
+      "@/utils": ["./src/utils"],
+      "@/pages": ["./src/pages/index"],
     }
   }
 }

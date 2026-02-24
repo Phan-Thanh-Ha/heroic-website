@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { cartStore } from "@/store/cartStore";
-import { Banknote, CheckCircle2, CreditCard } from "lucide-react";
+import { Banknote, CheckCircle2, CreditCard, Loader2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
@@ -14,6 +14,7 @@ interface CartSummaryProps {
     onApplyDiscount?: () => void;
     onCheckout: () => void;
     onChangePaymentMethod: (method: string) => void;
+    isLoading?: boolean;
 }
 
 const CartSummary: React.FC<CartSummaryProps> = observer(({
@@ -23,6 +24,7 @@ const CartSummary: React.FC<CartSummaryProps> = observer(({
     onApplyDiscount,
     onCheckout,
     onChangePaymentMethod,
+    isLoading = false,
 }) => {
     const [paymentMethod, setPaymentMethod] = useState<'cash' | 'transfer'>('cash');
     // Tính tổng tiền của giỏ hàng lấy từ cartStore
@@ -83,8 +85,8 @@ const CartSummary: React.FC<CartSummaryProps> = observer(({
                             <div
                                 onClick={() => handleChangePaymentMethod('cash')}
                                 className={`relative flex flex-col items-center justify-center py-3 px-4 rounded-lg border transition-all cursor-pointer ${paymentMethod === 'cash'
-                                        ? "border-blue-500 bg-blue-500/10 text-blue-400" // Khi chọn: viền xanh, nền xanh mờ
-                                        : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700" // Khi chưa chọn: nền tối tiệp với UI
+                                    ? "border-blue-500 bg-blue-500/10 text-blue-400" // Khi chọn: viền xanh, nền xanh mờ
+                                    : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700" // Khi chưa chọn: nền tối tiệp với UI
                                     }`}
                             >
                                 <Banknote className={`w-5 h-5 mb-2 ${paymentMethod === 'cash' ? "text-blue-400" : "text-zinc-500"}`} />
@@ -99,8 +101,8 @@ const CartSummary: React.FC<CartSummaryProps> = observer(({
                             <div
                                 onClick={() => handleChangePaymentMethod('transfer')}
                                 className={`relative flex flex-col items-center justify-center py-3 px-4 rounded-lg border transition-all cursor-pointer ${paymentMethod === 'transfer'
-                                        ? "border-blue-500 bg-blue-500/10 text-blue-400"
-                                        : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700"
+                                    ? "border-blue-500 bg-blue-500/10 text-blue-400"
+                                    : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700"
                                     }`}
                             >
                                 <CreditCard className={`w-5 h-5 mb-2 ${paymentMethod === 'transfer' ? "text-blue-400" : "text-zinc-500"}`} />
@@ -114,8 +116,8 @@ const CartSummary: React.FC<CartSummaryProps> = observer(({
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full size-lg text-md font-bold py-6" onClick={onCheckout}>
-                        TIẾN HÀNH THANH TOÁN
+                    <Button className="w-full size-lg text-md font-bold py-6" onClick={onCheckout} disabled={isLoading}>
+                        {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "TIẾN HÀNH THANH TOÁN"}
                     </Button>
                 </CardFooter>
             </Card>

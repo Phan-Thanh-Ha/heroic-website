@@ -9,7 +9,7 @@ export default defineConfig({
   // Thêm đoạn cấu hình server dưới đây
   server: {
     open: true, // Đảm bảo giá trị này là false
-},
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -19,6 +19,7 @@ export default defineConfig({
       '@/api': path.resolve(__dirname, './src/api'),
       '@/types': path.resolve(__dirname, './src/types'),
       '@/utils': path.resolve(__dirname, './src/utils'),
+      '@/pages': path.resolve(__dirname, './src/pages/index'),
     },
   },
 })

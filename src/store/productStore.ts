@@ -1,5 +1,5 @@
 import { productApi } from "@/api";
-import type { IProduct } from "@/types";
+import type { IProduct, IProductQueryParams } from "@/types";
 import { makeAutoObservable, runInAction } from "mobx";
 
 class ProductStore {
@@ -12,7 +12,7 @@ class ProductStore {
     }
 
     // Lấy danh sách product
-    async fetchProducts(params?: any) {
+    async fetchProducts(params?: IProductQueryParams) {
         try {
             this.setLoading(true);
 

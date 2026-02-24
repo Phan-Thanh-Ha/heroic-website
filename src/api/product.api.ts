@@ -1,9 +1,9 @@
 import apiClient from "@/api/apiClient";
-import type { ApiResponse } from "@/types";
+import type { ApiResponse, IProductQueryParams } from "@/types";
 
 export const productApi = {
     // Lấy danh sách product
-    findAll: (params?: any): Promise<ApiResponse> => {
+    findAll: (params?: IProductQueryParams): Promise<ApiResponse> => {
         return apiClient.get("/v1/customers/product", { params });
     },
 
