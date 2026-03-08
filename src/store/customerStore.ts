@@ -38,7 +38,7 @@ class CustomerStore {
     setAuth(data: { customer: ICustomer; token: string }) {
         this.customers = data.customer;
         this.accessToken = data.token;
-        this.loginProvider = data.customer.typeLogin?.toUpperCase() ?? null;
+        this.loginProvider = data.customer.typeRegister?.toUpperCase() ?? null;
         this.requiresOTP = false;
         this.pendingEmail = null;
     }
@@ -57,7 +57,7 @@ class CustomerStore {
         const providerActions: Record<string, () => void> = {
             [PROVIDER.GOOGLE]: () => googleLogout(),
             [PROVIDER.FACEBOOK]: () => facebookLogout(),
-            [PROVIDER.FORM]: () => {} // Với form, clearPersistedStore đã lo phần xoá storage
+            [PROVIDER.FORM]: () => { } // Với form, clearPersistedStore đã lo phần xoá storage
         };
 
         try {
@@ -74,7 +74,7 @@ class CustomerStore {
             this.loginProvider = null;
             this.requiresOTP = false;
             this.pendingEmail = null;
-            
+
             // Xoá dữ liệu đã lưu trong LocalStorage
             clearPersistedStore(this);
         }

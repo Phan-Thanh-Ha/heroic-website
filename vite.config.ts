@@ -6,9 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Thêm đoạn cấu hình server dưới đây
   server: {
-    open: true, // Đảm bảo giá trị này là false
+    open: true,
   },
   resolve: {
     alias: {

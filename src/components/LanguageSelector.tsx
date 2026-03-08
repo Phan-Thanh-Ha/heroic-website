@@ -59,7 +59,7 @@ const LanguageSelector: React.FC = () => {
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[150px]">
+      <DropdownMenuContent align="end" className="min-w-150px">
         {availableLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}

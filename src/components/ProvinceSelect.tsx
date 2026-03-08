@@ -59,7 +59,7 @@ const ProvinceSelect: React.FC<ProvinceSelectProps> = ({
                 <SelectTrigger className="w-full">
                     <SelectValue placeholder={loading ? "Đang tải..." : placeholder} />
                 </SelectTrigger>
-                <SelectContent className="max-h-[300px]">
+                <SelectContent className="max-h-300px">
                     {loading ? (
                         <div className="p-2 text-center text-sm text-muted-foreground">Đang tải...</div>
                     ) : provinces.length > 0 ? (

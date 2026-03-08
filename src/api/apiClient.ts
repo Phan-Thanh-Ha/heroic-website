@@ -95,7 +95,6 @@ apiClient.interceptors.response.use(
                 if (!isAuthPage) {
                     errorMessage = "Phiên đăng nhập hết hạn.";
                     window.location.href = "/login";
-                    // Logic logout...
                 }
             }
 
